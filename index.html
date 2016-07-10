@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-一个电脑对应两个Github帐户" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/10/一个电脑对应两个Github帐户/" class="article-date">
+  <time datetime="2016-07-10T11:32:13.000Z" itemprop="datePublished">2016-07-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/10/一个电脑对应两个Github帐户/">一个电脑对应两个Github帐户</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="问题引入"><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h1><p>最近和一个老同学协作编写代码，所以就到Github上又注册一个Github账号（下面统一称作TechGroup），所以我写的代码就想同时向我自己的Github帐户(下面统一称作MyGithub)和TechGroup提交，这是就会出现一个问题，因为一个ssh key只能用在一个帐户中（当你将一个ssh key添加到两个帐户时，会提示ssh key已经被使用），接下来还会有一个问题如何给一个本地git资源库配置两个远程资源库。</p>
+<h1 id="解决第一个问题的步骤如下："><a href="#解决第一个问题的步骤如下：" class="headerlink" title="解决第一个问题的步骤如下："></a>解决第一个问题的步骤如下：</h1><ol>
+<li><p>首先为TechGroup帐户创建一个ssh key：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -t rsa -C cytmxk@foxmail.com</div><div class="line">Generating public/private rsa key pair.</div><div class="line">Enter file in which to save the key (/Users/lala/.ssh/id_rsa):~/.ssh/tech_rsa(此处填写rsa文件的路径)</div><div class="line">Enter passphrase (empty for no passphrase):</div><div class="line">Enter same passphrase again:</div><div class="line">Your identification has been saved in yes.</div><div class="line">Your public key has been saved in tech_rsa.pub.</div><div class="line">The key fingerprint is:</div><div class="line">fb:c4:b0:e0:47:fd:be:e0:fb:ea:73:ef:a8:29:d5:22 cytmxk@foxmail.com</div><div class="line">The key&apos;s randomart image is:</div><div class="line">+--[ RSA 2048]----+</div><div class="line">|                |</div><div class="line">|                 |</div><div class="line">|                 |</div><div class="line">|         .       |</div><div class="line">|      . S ..     |</div><div class="line">|     . oE=o..    |</div><div class="line">|      . +o+..    |</div><div class="line">|       ..+.+..   |</div><div class="line">|         oOB=+o  |</div><div class="line">+-----------------+</div></pre></td></tr></table></figure>
+</li>
+<li><p>通过如下命令列举 ssh-agent中包含的ssh-key：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ ssh-add -l</div><div class="line">2048 SHA256:4IGL3+7tT+lDdxONJlKxwQsjZ7JlB2U1936UMWU+1T8  (RSA)</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>可以看到我原来为MyGithub生成的ssh key。<br>执行如下命令将私钥tech_rsa添加的 ssh-agent：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ ssh-add ~/.ssh/tech_rsa</div><div class="line">$ ssh-add -l</div><div class="line">2048 SHA256:4IGL3+7tT+lDdxONJlKxwQsjZ7JlB2U1936UMWU+1T8  (RSA)</div><div class="line">2048 SHA256:uDP8CISrd8Os1vl+wnuPj4ldJaiq2XQnRk9FGKHhDfU /Users/chenyang/.ssh/tech_rsa (RSA)</div><div class="line">192:~ chenyang$</div></pre></td></tr></table></figure></p>
+<p>可以看到ssh-add -l命令输出中多了一行，这一行就是tech_rsa私钥。</p>
+<ol>
+<li><p>配置.ssh/config</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">#多个ssh的配置 begin</div><div class="line">Host github.com</div><div class="line">    HostName github.com</div><div class="line">    IdentityFile ~/.ssh/id_rsa</div><div class="line">Host tech.github.com</div><div class="line">    HostName github.com</div><div class="line">    IdentityFile ~/.ssh/tech_rsa</div><div class="line">#多个ssh的配置 end</div></pre></td></tr></table></figure>
+</li>
+<li><p>将创建生成tech_rsa.pub中的内容添加到TechGroup帐户中，添加的流程这里就不赘叙了，接下来测试一下是否添加成功(如果输出如下结果，表明添加成功)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ ssh -T git@tech.github.com</div><div class="line">Hi techgroup01! You&apos;ve successfully authenticated, but GitHub does not provide shell access.</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>注意上面的git@tech.github.com中的tech.github.com与config中的tech _rsa的Host保持一致。</p>
+<h1 id="给一个本地git资源库配置两个远程资源库，执行如下命令即可："><a href="#给一个本地git资源库配置两个远程资源库，执行如下命令即可：" class="headerlink" title="给一个本地git资源库配置两个远程资源库，执行如下命令即可："></a>给一个本地git资源库配置两个远程资源库，执行如下命令即可：</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git remote add my_origin git@github.com:cytmxk/customview.git</div><div class="line">$ git remote add tech_origin git@tech.github.com:techgroup01/customview.git</div></pre></td></tr></table></figure>
+<p>上面命令中要注意第二句中的远程资源库的Host要和config中相同，可以通过如下命令列举出当前库的所用远程资源库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ git remote -v</div><div class="line">my_origin	git@github.com:cytmxk/customview.git (fetch)</div><div class="line">my_origin	git@github.com:cytmxk/customview.git (push)</div><div class="line">tech_origin	git@tech.github.com:techgroup01/customview.git (fetch)</div><div class="line">tech_origin	git@tech.github.com:techgroup01/customview.git (push)</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/10/一个电脑对应两个Github帐户/" data-id="ciqgiwu6c00023bjfopyv8wf3" class="article-share-link">Partager</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-自定义LED点阵屏View" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/08/自定义LED点阵屏View/" class="article-date">
+  <time datetime="2016-07-08T08:42:03.000Z" itemprop="datePublished">2016-07-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/08/自定义LED点阵屏View/">自定义LED点阵屏View</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>看过演唱会的同学应该都看到过粉丝举着LED点阵屏幕的牌子来支持自己心目中的男神或者女神，感觉这种点阵屏幕的效果挺有意思的，于是花了点时间用Android实现了一下，实现效果如下：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2171639-dbecaa5064916cad.gif?imageMogr2/auto-orient/strip" alt="实现效果"></p>
+<h1 id="相关的概念"><a href="#相关的概念" class="headerlink" title="相关的概念"></a>相关的概念</h1><ol>
+<li><p>点阵字库与矢量字库<br>点阵字库就是每一个汉字用矩形点阵来表示，然后用每个点的虚实来表示汉字的轮廓，常用来作为显示字库使用，这类点阵字库汉字最大的缺点是不能放大，一旦放大后就会发现文字边缘的锯齿，常用的点阵矩阵有HZK12、HZK16和HZK24，我下面例子中的用到的字库是HZK16。<br>矢量字库保存的是对每一个汉字的描述信息，比如一个笔划的起始、终止坐标，半径、弧度等等。在显示、打印这一类字库时，要经过一系列的数学运算才能输出结果，但是这一类字库保存的汉字理论上可以被无限地放大，笔划轮廓仍然能保持圆滑，打印时使用的字库均为此类字库.</p>
+</li>
+<li><p>点阵字库结构<br>在汉字的点阵字库中，每个字节的每个位都代表一个汉字的一个点，每个汉字都是由一个矩形点阵组成，0代表没有，1代表有点，将0和1分别用不同颜色画出，就形成了一个汉字。字库根据字节所表示的点是一行还是一列将字库的存储方式分为横向和纵向，目前多数的字库都是横向的存储方式(用得最多的应该是早期UCDOS字库)，纵向一般是因为有某些液晶是采用纵向扫描显示法，为了提高显示速度，于是便把字库矩阵做成纵向，省得在显示时还要做矩阵转换。我们接下去所描述的HZK16就是一种纵向字库。对于16*16字库来说，它所需要的位数共是16*16＝256个位，每个字节为8位，因此，每个汉字都需要用256/8=32个字节来表示。即每两个字节代表一行的16个点，共需要16行，显示汉字时，只需一次性读取32个字节，并将每两个字节为一行打印出来，即可形成一个汉字.</p>
+</li>
+<li><p>汉字的区位码<br>汉字通过GB2312编码即每个汉字用两个byte来表示，第一个byte表示这个汉字在字库文件中的区码，第二个byte表示这个汉字在字库文件中的位码，通过这两个值可以计算到这个汉字在字库文件中的相对位置，根据这个位置读取接下来的32个byte(对于16*16字库)，就对应着这个汉字对应的字模信息，字模信息其实就是一个byte数组。<br><strong>HZK16字库</strong>是符合GB2312标准的16×16点阵字库，HZK16的GB2312-80支持的汉字有6763个，符号682个。其中一级汉字有3755个，按声序排列，二级汉字有3008个，按偏旁部首排列。</p>
+</li>
+<li><p>通过机内码获取文字对应字模信息的起始位置<br>在PC机的文本文件中，汉字是以机内码的形式存储的，每个汉字占用两个字节：第一个字节为区码，为了与ASCII码区别，范围从十六进制的0A1H开始（小于80H的为ASCII码字符），对应区位码中区码的第一区；第二个字节为位码，范围也是从0A1H开始，对应某区中的第一个位码。这样，将汉字机内码减去0A0A0H就得该汉字的区位码。<br>例如汉字“房”的机内码为十六进制的“B7BF”，其中“B7”表示区码，“BF”表示位码。所以“房”的区位码为0B7BFH-0A0A0H=171FH。将区码和位码分别转换为十进制得汉字“房”的区位码为“2331”，即“房”的字模信息位于第23区的第31个字的位置，由于一个区包含94个汉字，所以第32×[(23-1) ×94+(31-1)]=67136Bit以后的32个字节为“房”的字模信息。</p>
+</li>
+</ol>
+<h1 id="代码实现解析"><a href="#代码实现解析" class="headerlink" title="代码实现解析"></a>代码实现解析</h1><p>要实现上面的滚动字幕的效果，可以分为如下几步：</p>
+<ol>
+<li><p>获取文字字符串的字模信息，并且将字模信息转化为Boolean类型的二维数组(字模信息的每一bit中0代表没有，1代表有点，将0转换成false，将1转换为true)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 获取汉字字符串的点阵矩阵</div><div class="line"> * @param text</div><div class="line"> * @return</div><div class="line"> */</div><div class="line">public boolean[][] getWordsMatrix(Context context, String text) &#123;</div><div class="line">    return getWordsMatrix(context, text, null);</div><div class="line">&#125;</div><div class="line"></div><div class="line">public boolean[][] getWordsMatrix(Context context, String text, DotMatrixFontType dotMatrixFontType) &#123;</div><div class="line">    if (null == dotMatrixFontType) &#123;</div><div class="line">        this.mDotMatrixFontType = DotMatrixFontType.SIXTEEN_TYPE;</div><div class="line">        this.mWordByteByDots = DotMatrixFontType.SIXTEEN_TYPE.getValue() * DotMatrixFontType.SIXTEEN_TYPE.getValue() / 8;</div><div class="line">    &#125; else &#123;</div><div class="line">        this.mDotMatrixFontType = dotMatrixFontType;</div><div class="line">        this.mWordByteByDots = dotMatrixFontType.getValue() * dotMatrixFontType.getValue() / 8;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    byte[] bytes = null;</div><div class="line">    try &#123;</div><div class="line">        // 获取汉字文本的字节编码</div><div class="line">        bytes = text.getBytes(ENCODE);</div><div class="line">    &#125; catch (UnsupportedEncodingException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">    // 获取每个字节对应正数编码，即得到汉字对应的区码和位码</div><div class="line">    int[] code = new int[bytes.length];</div><div class="line">    for (int i = 0; i &lt; bytes.length; i++) &#123;</div><div class="line">        code[i] = bytes[i] &lt; 0 ? 256 + bytes[i] : bytes[i];</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    int wordNumber = code.length / 2;</div><div class="line">    boolean[][] wordsMatrix = new boolean[mDotMatrixFontType.getValue()][mDotMatrixFontType.getValue() * wordNumber];</div><div class="line">    for (int i = 0; i &lt; wordNumber; i++) &#123;</div><div class="line">        // 通过区码和位码获取字库中对应的字模信息</div><div class="line">        byte[] temp = read(context, code[2 * i], code[2 * i + 1]);</div><div class="line">        for (int j = 0; j &lt; mWordByteByDots; j++) &#123;</div><div class="line">            for (int k = 0; k &lt; 8; k++) &#123;</div><div class="line">                // 将字模信息转化为Boolean类型的二维数组并且进行纵向填充数组</div><div class="line">                int row = (j * 8 + k) / 16 + i * mDotMatrixFontType.getValue();</div><div class="line">                int col = (j * 8 + k) % 16;</div><div class="line">                if (((temp[j] &gt;&gt; (7 - k)) &amp; 1) == 1) &#123;</div><div class="line">                    wordsMatrix[col][row] = true;</div><div class="line">                &#125; else &#123;</div><div class="line">                    wordsMatrix[col][row] = false;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    return wordsMatrix;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 从字库中获取指定区码和位码汉字的字模信息</div><div class="line"> * @param areaCode 区码，对应编码的第一个字节</div><div class="line"> * @param posCode  位码，对应编码的第二个字节</div><div class="line"> * @return</div><div class="line"> */</div><div class="line">private byte[] read(Context context, int areaCode, int posCode) &#123;</div><div class="line">    byte[] data = null;</div><div class="line">    try &#123;</div><div class="line">        int area = areaCode - 0xa0;</div><div class="line">        int pos = posCode - 0xa0;</div><div class="line">        InputStream in = context.getAssets().open(DOT_MATRIX_FONT);</div><div class="line">        int offset = ((area - 1) * 94 + pos -1) * mWordByteByDots;</div><div class="line">        in.skip(offset);</div><div class="line">        data = new byte[mWordByteByDots];</div><div class="line">        in.read(data, 0, mWordByteByDots);</div><div class="line">        in.close();</div><div class="line">    &#125; catch (IOException e) &#123;</div><div class="line">        Log.d(TAG, &quot;IOException e = &quot; + e.getMessage());</div><div class="line">    &#125;</div><div class="line">    return data;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>根据Boolean类型的二维数组绘制点阵，当Boolean值为false，表示要绘制空心圆，反之绘制实心圆。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">protected void onDraw(Canvas canvas) &#123;</div><div class="line">    //super.onDraw(canvas);</div><div class="line">    for (int row = 0; row &lt; mDotMatrixFontType.getValue(); row++) &#123;</div><div class="line">        for (int col = 0; col &lt; mDotMatrixFontType.getValue() * this.mWordNumber; col++) &#123;</div><div class="line">            if (mWordsMatrix[row][col]) &#123;</div><div class="line">                canvas.drawCircle(col * (mPointSpace + mPaintRadius * 2) + mPointSpace + mPaintRadius,</div><div class="line">                        row * (mPointSpace + mPaintRadius * 2) + mPointSpace + mPaintRadius,</div><div class="line">                        mPaintRadius, mFillPaint);</div><div class="line">            &#125; else &#123;</div><div class="line">                canvas.drawCircle(col * (mPointSpace + mPaintRadius * 2) + mPointSpace + mPaintRadius,</div><div class="line">                        row * (mPointSpace + mPaintRadius * 2) + mPointSpace + mPaintRadius,</div><div class="line">                        mPaintRadius, mHollowPaint);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    Message message = new Message();</div><div class="line">    message.obj = this.mScrollDirection;</div><div class="line">    mHandler.sendMessageDelayed(message, mScrollSpeed.getValue());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>通过Handler机制实现定期刷新界面，即实现滚动效果。在上面的代码最后，就是在绘制后向Handler发送一个延迟消息，从而进入到滚动循环，下面是在Handler中通过调用invalidate方法实现定期刷新，即实现滚动的效果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">Handler mHandler = new Handler() &#123;</div><div class="line">    @Override</div><div class="line">    public void handleMessage(Message msg) &#123;</div><div class="line">        super.handleMessage(msg);</div><div class="line">        switch ((Direction)msg.obj) &#123;</div><div class="line">            case LEFT:</div><div class="line">                matrixMoveToLeft();</div><div class="line">                invalidate();</div><div class="line">                break;</div><div class="line">            case RIGHT:</div><div class="line">                matrixMoveToRight();</div><div class="line">                invalidate();</div><div class="line">                break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">private void matrixMoveToRight() &#123;</div><div class="line">    for (int row = 0; row &lt; mDotMatrixFontType.getValue(); row++) &#123;</div><div class="line">        boolean temp = mWordsMatrix[row][mDotMatrixFontType.getValue() * mWordNumber - 1];</div><div class="line">        System.arraycopy(mWordsMatrix[row], 0, mWordsMatrix[row], 1, mDotMatrixFontType.getValue() * mWordNumber - 1);</div><div class="line">        mWordsMatrix[row][0] = temp;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">private void matrixMoveToLeft() &#123;</div><div class="line">    for (int row = 0; row &lt; mDotMatrixFontType.getValue(); row++) &#123;</div><div class="line">        boolean temp = mWordsMatrix[row][0];</div><div class="line">        System.arraycopy(mWordsMatrix[row], 1, mWordsMatrix[row], 0, mDotMatrixFontType.getValue() * mWordNumber - 1);</div><div class="line">        mWordsMatrix[row][mDotMatrixFontType.getValue() * mWordNumber - 1] = temp;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><ol>
+<li>将HZK16字库放到assets文件夹中</li>
+</ol>
+<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ol>
+<li><a href="http://qhyuang1992.com/index.php/2016/06/25/android_dian_zhen_ping_xiao_guo_de_kong_jian/" target="_blank" rel="external">Android点阵屏效果的控件</a></li>
+<li><a href="https://www.jdgcs.org/wiki/%E6%B1%89%E5%AD%97%E5%BA%93%28HZK16%29%E7%9A%84%E4%BD%BF%E7%94%A8" target="_blank" rel="external">汉字库(HZK16)的使用</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/08/自定义LED点阵屏View/" data-id="ciqgiwu6e00033bjfm8p08kya" class="article-share-link">Partager</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-自定义实现不规则形状的View" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/06/自定义实现不规则形状的View/" class="article-date">
+  <time datetime="2016-07-06T06:05:11.000Z" itemprop="datePublished">2016-07-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/06/自定义实现不规则形状的View/">自定义实现不规则形状的View</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>在一些项目中要求将头像显示成圆形或者其他的一些不规则形状的图形，我们不可能为了实现这样的效果，在代码中将图像进行裁剪，这样的话也显得太low了，也没有扩展性。一般实现自定义形状的图形有三种方式：PorterDuffXfermode 、BitmapShader、ClipPath。下面我都会分别说明，我这里的实现使用的是第一种方式，实现效果图如下所示：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2171639-59cf0838a21660bf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="运行效果图"></p>
+<h1 id="PorterDuffXfermode-方式"><a href="#PorterDuffXfermode-方式" class="headerlink" title="PorterDuffXfermode 方式"></a>PorterDuffXfermode 方式</h1><p>这是由Tomas Proter和 Tom Duff命名的图像转换模式，它有16个枚举值来控制Canvas上 上下两个图层的交互（先画的图层在下层）。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2171639-da149a0c83d741c6?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="蓝色的在上层"></p>
+<pre><code>1.PorterDuff.Mode.CLEAR　　 　所绘制不会提交到画布上 
+2.PorterDuff.Mode.SRC　　　　　显示上层绘制图片 
+3.PorterDuff.Mode.DST　　　　　显示下层绘制图片 
+4.PorterDuff.Mode.SRC_OVER　　正常绘制显示，上下层绘制叠盖。 
+5.PorterDuff.Mode.DST_OVER　　上下层都显示。下层居上显示。 
+6.PorterDuff.Mode.SRC_IN　　　　取两层绘制交集。显示上层。 
+7.PorterDuff.Mode.DST_IN　　　　取两层绘制交集。显示下层。 
+8.PorterDuff.Mode.SRC_OUT　　　取上层绘制非交集部分。 
+9.PorterDuff.Mode.DST_OUT　　　取下层绘制非交集部分。 
+10.PorterDuff.Mode.SRC_ATOP　　取下层非交集部分与上层交集部分 
+11.PorterDuff.Mode.DST_ATOP　　取上层非交集部分与下层交集部分 
+12.PorterDuff.Mode.XOR　　　　　异或：去除两图层交集部分 
+13.PorterDuff.Mode.DARKEN　　　取两图层全部区域，交集部分颜色加深 
+14.PorterDuff.Mode.LIGHTEN　　　取两图层全部，点亮交集部分颜色 
+15.PorterDuff.Mode.MULTIPLY　　取两图层交集部分叠加后颜色 
+16.PorterDuff.Mode.SCREEN　　　 取两图层全部区域，交集部分变为透明色
+</code></pre><ol>
+<li><p>实现思路<br>会玩Ps的朋友肯定知道，如果有两个图层，我们想把上面图层裁切成下面图层的形状，只需要调下面图层的选区，然后选中上面的图层，蒙板就可以了。那么我们就可以利用PorterDuff.Mode的 SRC_IN 或 DST_IN 来取得两个图层的交集，从而把图像裁切成我们想要的各种样式。我们需要一个形状图层和一个显示图层。并且显示图层要完全覆盖形状图层。</p>
+</li>
+<li><p>代码实现与详解<br>继承ImageView，复写了imageview的四个setImage方法（为了更好的兼容性），在setImageDrawable方法中得到前景图片（即显示图层）：</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public void setImageBitmap(Bitmap bm) &#123;</div><div class="line">    Log.d(TAG, &quot;setImageBitmap bm = &quot; + bm);</div><div class="line">    super.setImageBitmap(bm);</div><div class="line">    mBitmap = bm;</div><div class="line">    setBackgroundBmp();</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public void setImageDrawable(Drawable drawable) &#123;</div><div class="line">    Log.d(TAG, &quot;setImageDrawable drawable = &quot; + drawable);</div><div class="line">    super.setImageDrawable(drawable);</div><div class="line">    mBitmap = getBitmapFromDrawable(drawable);</div><div class="line">    setBackgroundBmp();</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public void setImageResource(int resId) &#123;</div><div class="line">    Log.d(TAG, &quot;setImageResource resId = &quot; + resId);</div><div class="line">    super.setImageResource(resId);</div><div class="line">    mBitmap = getBitmapFromDrawable(getDrawable());</div><div class="line">    setBackgroundBmp();</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public void setImageURI(Uri uri) &#123;</div><div class="line">    super.setImageURI(uri);</div><div class="line">    Log.d(TAG, &quot;setImageURI uri = &quot; + uri);</div><div class="line">    mBitmap = getBitmapFromDrawable(getDrawable());</div><div class="line">    setBackgroundBmp();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后获取背景图片（即形状图层）并且通过调用invalidate()使View被重绘：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">private void setBackgroundBmp()&#123;</div><div class="line">    if(null==getBackground())&#123;</div><div class="line">        throw new IllegalArgumentException(String.format(&quot;background is null.&quot;));</div><div class="line">    &#125;else&#123;</div><div class="line">        mBackgroundBmp = getBitmapFromDrawable(getBackground());</div><div class="line">        invalidate();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在重绘之前利用PorterDuff.Mode的 SRC_IN 或 DST_IN 取形状图层和显示图层交集，从而得到自定义形状的图片：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">protected void onSizeChanged(int w, int h, int oldw, int oldh) &#123;</div><div class="line">    super.onSizeChanged(w, h, oldw, oldh);</div><div class="line">    mViewWidth = w;</div><div class="line">    mViewHeight = h;</div><div class="line">&#125;</div><div class="line"></div><div class="line">private Bitmap createImage()</div><div class="line">&#123;</div><div class="line">    mBackgroundBmp = getCenterCropBitmap(mBackgroundBmp, mViewWidth, mViewHeight);</div><div class="line">    mBitmap = getCenterCropBitmap(mBitmap, mViewWidth, mViewHeight);</div><div class="line"></div><div class="line">    int bmpWidth = mBitmap.getWidth();</div><div class="line">    int bmpHeight = mBitmap.getHeight();</div><div class="line"></div><div class="line">    Paint paint = new Paint();</div><div class="line">    paint.setAntiAlias(true);</div><div class="line">    Bitmap finalBmp = Bitmap.createBitmap(mViewWidth,mViewHeight, Bitmap.Config.ARGB_8888);</div><div class="line">    Canvas canvas = new Canvas(finalBmp);</div><div class="line">    canvas.drawBitmap(mBackgroundBmp, 0, 0, paint);</div><div class="line">    paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));</div><div class="line">    canvas.drawBitmap(mBitmap, (mViewWidth - bmpWidth) / 2, (mViewHeight - bmpHeight) / 2, paint);</div><div class="line">    return finalBmp;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 类比ScaleType.CENTER_CROP</div><div class="line"> */</div><div class="line">private Bitmap getCenterCropBitmap(Bitmap src, float rectWidth, float rectHeight) &#123;</div><div class="line"></div><div class="line">    float srcRatio = ((float) src.getWidth()) / src.getHeight();</div><div class="line">    float rectRadio = rectWidth / rectHeight;</div><div class="line">    if (srcRatio &lt; rectRadio) &#123;</div><div class="line">        return Bitmap.createScaledBitmap(src, (int)rectWidth, (int)((rectWidth / src.getWidth()) * src.getHeight()), false);</div><div class="line">    &#125; else &#123;</div><div class="line">        return Bitmap.createScaledBitmap(src, (int)((rectHeight / src.getHeight()) * src.getWidth()), (int)rectHeight, false);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>得到要绘制的图片后，就是通过重写onDraw方法进行绘制：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">protected void onDraw(Canvas canvas) &#123;</div><div class="line">    if(mBitmap!=null &amp;&amp; mBackgroundBmp!=null)&#123;</div><div class="line">        canvas.drawBitmap(createImage(), 0, 0, null);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后就是在布局中使用了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;com.cytmxk.customview.customshapeview.AvatarView</div><div class="line">    android:layout_marginLeft=&quot;20dp&quot;</div><div class="line">    android:layout_width=&quot;100dp&quot;</div><div class="line">    android:layout_height=&quot;100dp&quot;</div><div class="line">    android:background=&quot;@drawable/avatar_view_rectangle_shape_two&quot;</div><div class="line">    android:src=&quot;@drawable/avatar_view2&quot; /&gt;</div></pre></td></tr></table></figure></p>
+<p>这里的android:background定义的就是我们的形状图层，它可以是一个xxx_shape.xml的布局文件，比如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</div><div class="line">&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</div><div class="line">    android:shape=&quot;rectangle&quot; &gt;</div><div class="line">    &lt;solid android:color=&quot;#fff&quot; &gt;&lt;/solid&gt;</div><div class="line">    &lt;corners android:radius=&quot;10dp&quot; /&gt;</div><div class="line">    &lt;size android:width=&quot;100dp&quot;</div><div class="line">        android:height=&quot;100dp&quot;/&gt;</div><div class="line">&lt;/shape&gt;</div></pre></td></tr></table></figure></p>
+<h1 id="BitmapShader方式"><a href="#BitmapShader方式" class="headerlink" title="BitmapShader方式"></a>BitmapShader方式</h1><p>通过Bitmap得到一个着色器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);</div><div class="line">参数 </div><div class="line">①　mBitmap：你要绘制的图片</div><div class="line">②　emun Shader.TileMode 定义了三种着色模式： </div><div class="line">　　 CLAMP 拉伸</div><div class="line"> 　　REPEAT 重复</div><div class="line"> 　　MIRROR 镜像</div><div class="line"> 好比你拿一张分辨率和电脑屏幕不一样的图片设置为壁纸时，选择的三种方式一样。</div></pre></td></tr></table></figure></p>
+<p>给画笔设置着色器，这样画笔就能在 canvas的相应形状上画出我们的图片Bitmap:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mBitmapPaint.setShader(mBitmapShader);</div><div class="line">canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mBitmapPaint);</div></pre></td></tr></table></figure></p>
+<p>当然我们一般设置的模式为CLAMP 拉伸（当图片mBitmap的宽高小于View的时候要拉伸），但是我们一般不想要拉伸（变形了），所以一般还要给着色器设置一个matrix，去适当的放大或者缩小图片。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mBitmapShader.setLocalMatrix(mShaderMatrix);</div></pre></td></tr></table></figure></p>
+<p>著名的项目<a href="https://github.com/hdodenhof/CircleImageView" target="_blank" rel="external">CircleImageView</a>就是用着色器实现的，实现思路上面已经说了，代码有详细的注释，理解起来应该没什么问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div><div class="line">305</div><div class="line">306</div><div class="line">307</div><div class="line">308</div><div class="line">309</div><div class="line">310</div><div class="line">311</div><div class="line">312</div><div class="line">313</div><div class="line">314</div><div class="line">315</div><div class="line">316</div></pre></td><td class="code"><pre><div class="line">public class CircleImageView extends ImageView &#123;</div><div class="line">    //缩放类型</div><div class="line">    private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;</div><div class="line">    private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;</div><div class="line">    private static final int COLORDRAWABLE_DIMENSION = 2;</div><div class="line">    // 默认边界宽度</div><div class="line">    private static final int DEFAULT_BORDER_WIDTH = 0;</div><div class="line">    // 默认边界颜色</div><div class="line">    private static final int DEFAULT_BORDER_COLOR = Color.BLACK;</div><div class="line">    private static final boolean DEFAULT_BORDER_OVERLAY = false;</div><div class="line"></div><div class="line">    private final RectF mDrawableRect = new RectF();</div><div class="line">    private final RectF mBorderRect = new RectF();</div><div class="line"></div><div class="line">    private final Matrix mShaderMatrix = new Matrix();</div><div class="line">    //这个画笔最重要的是关联了mBitmapShader 使canvas在执行的时候可以切割原图片(mBitmapShader是关联了原图的bitmap的)</div><div class="line">    private final Paint mBitmapPaint = new Paint();</div><div class="line">    //这个描边，则与本身的原图bitmap没有任何关联，</div><div class="line">    private final Paint mBorderPaint = new Paint();</div><div class="line">    //这里定义了 圆形边缘的默认宽度和颜色</div><div class="line">    private int mBorderColor = DEFAULT_BORDER_COLOR;</div><div class="line">    private int mBorderWidth = DEFAULT_BORDER_WIDTH;</div><div class="line"></div><div class="line">    private Bitmap mBitmap;</div><div class="line">    private BitmapShader mBitmapShader; // 位图渲染</div><div class="line">    private int mBitmapWidth;   // 位图宽度</div><div class="line">    private int mBitmapHeight;  // 位图高度</div><div class="line"></div><div class="line">    private float mDrawableRadius;// 图片半径</div><div class="line">    private float mBorderRadius;// 带边框的的图片半径</div><div class="line"></div><div class="line">    private ColorFilter mColorFilter;</div><div class="line">    //初始false</div><div class="line">    private boolean mReady;</div><div class="line">    private boolean mSetupPending;</div><div class="line">    private boolean mBorderOverlay;</div><div class="line">    //构造函数</div><div class="line">    public CircleImageView(Context context) &#123;</div><div class="line">        super(context);</div><div class="line">        init();</div><div class="line">    &#125;</div><div class="line">    //构造函数</div><div class="line">    public CircleImageView(Context context, AttributeSet attrs) &#123;</div><div class="line">        this(context, attrs, 0);</div><div class="line">    &#125;</div><div class="line">    /**</div><div class="line">     * 构造函数</div><div class="line">     */</div><div class="line">    public CircleImageView(Context context, AttributeSet attrs, int defStyle) &#123;</div><div class="line">        super(context, attrs, defStyle);</div><div class="line">        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0);</div><div class="line">        //通过TypedArray提供的一系列方法getXXXX取得我们在xml里定义的参数值；</div><div class="line">        // 获取边界的宽度</div><div class="line">        mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_border_width, DEFAULT_BORDER_WIDTH);</div><div class="line">        // 获取边界的颜色</div><div class="line">        mBorderColor = a.getColor(R.styleable.CircleImageView_border_color, DEFAULT_BORDER_COLOR);</div><div class="line">        mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_border_overlay, DEFAULT_BORDER_OVERLAY);</div><div class="line">        //调用 recycle() 回收TypedArray,以便后面重用</div><div class="line">        a.recycle();</div><div class="line">        init();</div><div class="line">    &#125;</div><div class="line">    /**</div><div class="line">     * 作用就是保证第一次执行setup函数里下面代码要在构造函数执行完毕时调用</div><div class="line">     */</div><div class="line">    private void init() &#123;</div><div class="line">        //在这里ScaleType被强制设定为CENTER_CROP，就是将图片水平垂直居中，进行缩放。</div><div class="line">        super.setScaleType(SCALE_TYPE);</div><div class="line">        mReady = true;</div><div class="line"></div><div class="line">        if (mSetupPending) &#123;</div><div class="line">            setup();</div><div class="line">            mSetupPending = false;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public ScaleType getScaleType() &#123;</div><div class="line">        return SCALE_TYPE;</div><div class="line">    &#125;</div><div class="line">    /**</div><div class="line">     * 这里明确指出 此种imageview 只支持CENTER_CROP 这一种属性</div><div class="line">     *</div><div class="line">     * @param scaleType</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public void setScaleType(ScaleType scaleType) &#123;</div><div class="line">        if (scaleType != SCALE_TYPE) &#123;</div><div class="line">            throw new IllegalArgumentException(String.format(&quot;ScaleType %s not supported.&quot;, scaleType));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void setAdjustViewBounds(boolean adjustViewBounds) &#123;</div><div class="line">        if (adjustViewBounds) &#123;</div><div class="line">            throw new IllegalArgumentException(&quot;adjustViewBounds not supported.&quot;);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void onDraw(Canvas canvas) &#123;</div><div class="line">        //如果图片不存在就不画</div><div class="line">        if (getDrawable() == null) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        //绘制内圆形 图片 画笔为mBitmapPaint</div><div class="line">        canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mBitmapPaint);</div><div class="line">        //如果圆形边缘的宽度不为0 我们还要绘制带边界的外圆形 边界画笔为mBorderPaint</div><div class="line">        if (mBorderWidth != 0) &#123;</div><div class="line">            canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPaint);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void onSizeChanged(int w, int h, int oldw, int oldh) &#123;</div><div class="line">        super.onSizeChanged(w, h, oldw, oldh);</div><div class="line">        setup();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public int getBorderColor() &#123;</div><div class="line">        return mBorderColor;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setBorderColor(int borderColor) &#123;</div><div class="line">        if (borderColor == mBorderColor) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mBorderColor = borderColor;</div><div class="line">        mBorderPaint.setColor(mBorderColor);</div><div class="line">        invalidate();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setBorderColorResource( int borderColorRes) &#123;</div><div class="line">        setBorderColor(getContext().getResources().getColor(borderColorRes));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public int getBorderWidth() &#123;</div><div class="line">        return mBorderWidth;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setBorderWidth(int borderWidth) &#123;</div><div class="line">        if (borderWidth == mBorderWidth) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mBorderWidth = borderWidth;</div><div class="line">        setup();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean isBorderOverlay() &#123;</div><div class="line">        return mBorderOverlay;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setBorderOverlay(boolean borderOverlay) &#123;</div><div class="line">        if (borderOverlay == mBorderOverlay) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mBorderOverlay = borderOverlay;</div><div class="line">        setup();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 以下四个函数都是</div><div class="line">     * 复写ImageView的setImageXxx()方法</div><div class="line">     * 注意这个函数先于构造函数调用之前调用</div><div class="line">     * @param bm</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public void setImageBitmap(Bitmap bm) &#123;</div><div class="line">        super.setImageBitmap(bm);</div><div class="line">        mBitmap = bm;</div><div class="line">        setup();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void setImageDrawable(Drawable drawable) &#123;</div><div class="line">        super.setImageDrawable(drawable);</div><div class="line">        mBitmap = getBitmapFromDrawable(drawable);</div><div class="line">        setup();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void setImageResource( int resId) &#123;</div><div class="line">        super.setImageResource(resId);</div><div class="line">        mBitmap = getBitmapFromDrawable(getDrawable());</div><div class="line">        setup();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void setImageURI(Uri uri) &#123;</div><div class="line">        super.setImageURI(uri);</div><div class="line">        mBitmap = getBitmapFromDrawable(getDrawable());</div><div class="line">        setup();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void setColorFilter(ColorFilter cf) &#123;</div><div class="line">        if (cf == mColorFilter) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mColorFilter = cf;</div><div class="line">        mBitmapPaint.setColorFilter(mColorFilter);</div><div class="line">        invalidate();</div><div class="line">    &#125;</div><div class="line">    /**</div><div class="line">     * Drawable转Bitmap</div><div class="line">     * @param drawable</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    private Bitmap getBitmapFromDrawable(Drawable drawable) &#123;</div><div class="line">        if (drawable == null) &#123;</div><div class="line">            return null;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (drawable instanceof BitmapDrawable) &#123;</div><div class="line">            //通常来说 我们的代码就是执行到这里就返回了。返回的就是我们最原始的bitmap</div><div class="line">            return ((BitmapDrawable) drawable).getBitmap();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        try &#123;</div><div class="line">            Bitmap bitmap;</div><div class="line"></div><div class="line">            if (drawable instanceof ColorDrawable) &#123;</div><div class="line">                bitmap = Bitmap.createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG);</div><div class="line">            &#125; else &#123;</div><div class="line">                bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), BITMAP_CONFIG);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            Canvas canvas = new Canvas(bitmap);</div><div class="line">            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());</div><div class="line">            drawable.draw(canvas);</div><div class="line">            return bitmap;</div><div class="line">        &#125; catch (OutOfMemoryError e) &#123;</div><div class="line">            return null;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    /**</div><div class="line">     * 这个函数很关键，进行图片画笔边界画笔(Paint)一些重绘参数初始化：</div><div class="line">     * 构建渲染器BitmapShader用Bitmap来填充绘制区域,设置样式以及内外圆半径计算等，</div><div class="line">     * 以及调用updateShaderMatrix()函数和 invalidate()函数；</div><div class="line">     */</div><div class="line">    private void setup() &#123;</div><div class="line">        //因为mReady默认值为false,所以第一次进这个函数的时候if语句为真进入括号体内</div><div class="line">        //设置mSetupPending为true然后直接返回，后面的代码并没有执行。</div><div class="line">        if (!mReady) &#123;</div><div class="line">            mSetupPending = true;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        //防止空指针异常</div><div class="line">        if (mBitmap == null) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        // 构建渲染器，用mBitmap位图来填充绘制区域,参数值代表如果图片太小的话 就直接拉伸</div><div class="line">        mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);</div><div class="line">        // 设置图片画笔反锯齿</div><div class="line">        mBitmapPaint.setAntiAlias(true);</div><div class="line">        // 设置图片画笔渲染器</div><div class="line">        mBitmapPaint.setShader(mBitmapShader);</div><div class="line">        // 设置边界画笔样式</div><div class="line">        mBorderPaint.setStyle(Paint.Style.STROKE);//设画笔为空心</div><div class="line">        mBorderPaint.setAntiAlias(true);</div><div class="line">        mBorderPaint.setColor(mBorderColor);    //画笔颜色</div><div class="line">        mBorderPaint.setStrokeWidth(mBorderWidth);//画笔边界宽度</div><div class="line">        //这个地方是取的原图片的宽高</div><div class="line">        mBitmapHeight = mBitmap.getHeight();</div><div class="line">        mBitmapWidth = mBitmap.getWidth();</div><div class="line">        // 设置含边界显示区域，取的是CircleImageView的布局实际大小，为方形</div><div class="line">        mBorderRect.set(0, 0, getWidth(), getHeight());</div><div class="line">        //计算 圆形带边界部分（外圆）的最小半径，取mBorderRect的宽高减去一个边缘大小的一半的较小值</div><div class="line">        mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2, (mBorderRect.width() - mBorderWidth) / 2);</div><div class="line">        // 初始图片显示区域为mBorderRect（CircleImageView的布局实际大小）</div><div class="line">        mDrawableRect.set(mBorderRect);</div><div class="line">        if (!mBorderOverlay) &#123;</div><div class="line">            //demo里始终执行</div><div class="line">            //通过inset方法  使得图片显示的区域从mBorderRect大小上下左右内移边界的宽度形成区域</div><div class="line">            mDrawableRect.inset(mBorderWidth, mBorderWidth);</div><div class="line">        &#125;</div><div class="line">        //这里计算的是内圆的最小半径，也即去除边界宽度的半径</div><div class="line">        mDrawableRadius = Math.min(mDrawableRect.height() / 2, mDrawableRect.width() / 2);</div><div class="line">        //设置渲染器的变换矩阵也即是mBitmap用何种缩放形式填充</div><div class="line">        updateShaderMatrix();</div><div class="line">        //手动触发ondraw()函数 完成最终的绘制</div><div class="line">        invalidate();</div><div class="line">    &#125;</div><div class="line">    /**</div><div class="line">     * 这个函数为设置BitmapShader的Matrix参数，设置最小缩放比例，平移参数。</div><div class="line">     * 作用：保证图片损失度最小和始终绘制图片正中央的那部分</div><div class="line">     */</div><div class="line">    private void updateShaderMatrix() &#123;</div><div class="line">        float scale;</div><div class="line">        float dx = 0;</div><div class="line">        float dy = 0;</div><div class="line"></div><div class="line">        mShaderMatrix.set(null);</div><div class="line">        // 这里不好理解 这个不等式也就是(mBitmapWidth / mDrawableRect.width()) &gt; (mBitmapHeight / mDrawableRect.height())</div><div class="line">        //取最小的缩放比例</div><div class="line">        if (mBitmapWidth * mDrawableRect.height() &gt; mDrawableRect.width() * mBitmapHeight) &#123;</div><div class="line">            //y轴缩放 x轴平移 使得图片的y轴方向的边的尺寸缩放到图片显示区域（mDrawableRect）一样）</div><div class="line">            scale = mDrawableRect.height() / (float) mBitmapHeight;</div><div class="line">            dx = (mDrawableRect.width() - mBitmapWidth * scale) * 0.5f;</div><div class="line">        &#125; else &#123;</div><div class="line">            //x轴缩放 y轴平移 使得图片的x轴方向的边的尺寸缩放到图片显示区域（mDrawableRect）一样）</div><div class="line">            scale = mDrawableRect.width() / (float) mBitmapWidth;</div><div class="line">            dy = (mDrawableRect.height() - mBitmapHeight * scale) * 0.5f;</div><div class="line">        &#125;</div><div class="line">        // shaeder的变换矩阵，我们这里主要用于放大或者缩小。</div><div class="line">        mShaderMatrix.setScale(scale, scale);</div><div class="line">        // 平移</div><div class="line">        mShaderMatrix.postTranslate((int) (dx + 0.5f) + mDrawableRect.left, (int) (dy + 0.5f) + mDrawableRect.top);</div><div class="line">        // 设置变换矩阵</div><div class="line">        mBitmapShader.setLocalMatrix(mShaderMatrix);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="ClipPath方式"><a href="#ClipPath方式" class="headerlink" title="ClipPath方式"></a>ClipPath方式</h1><p>以下代码可以把图形bitmap画在一个圆上，得到一个圆形头像：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">protected void onDraw(Canvas canvas) &#123;</div><div class="line">    Path path = new Path(); </div><div class="line">    //按照逆时针方向添加一个圆</div><div class="line">    path.addCircle(float x, float y, mRadius, Direction.CCW);</div><div class="line">    //先将canvas保存</div><div class="line">    canvas.save();</div><div class="line">    //把canvas修剪成指定的路径区域</div><div class="line">    canvas.clipPath(path);</div><div class="line">    //绘制图形Bitmap</div><div class="line">    canvas.drawBitmap(Bitmap,float left, float top, mPaint);</div><div class="line">    //恢复Canvas</div><div class="line">    canvas.restore();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这种方式明显最简单，你还可以一个个坐标点的添加形成一个路径。但是形状比较复杂的情况下，还是第一种实现比较方便。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/06/自定义实现不规则形状的View/" data-id="ciqgiwu6f00043bjfb1if66fn" class="article-share-link">Partager</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/01/hello-world/" class="article-date">
+  <time datetime="2016-07-01T12:59:45.000Z" itemprop="datePublished">2016-07-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/01/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/01/hello-world/" data-id="ciqgiwu6900013bjfirsrqm2p" class="article-share-link">Partager</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Hexo-Github静态博客搭建" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/01/Hexo-Github静态博客搭建/" class="article-date">
+  <time datetime="2016-07-01T09:02:36.000Z" itemprop="datePublished">2016-07-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/01/Hexo-Github静态博客搭建/">Hexo-Github静态博客搭建</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><ol>
+<li><p>前言<br>Hexo是一个基于Node.js的静态博客程序，可以方便的生成静态网页托管在github和Heroku上。作者是来自台湾的<a href="https://github.com/hexojs/hexo" target="_blank" rel="external">tommy351</a>。</p>
+</li>
+<li><p>安装Node.js<br><a href="https://nodejs.org/download/" target="_blank" rel="external">Node.js下载地址</a><br><a href="http://www.w3cschool.cc/nodejs/nodejs-install-setup.html" target="_blank" rel="external">Node.js安装流程</a><br>安装完成后，执行 node –version和npm –version 命令，如果输出如下图所示结果，就代表安装成功了。<br><img src="http://upload-images.jianshu.io/upload_images/2171639-80d7438a35b6e66a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"><br>git的安装和github账户的注册和配置我在这里就不在赘叙了。</p>
+</li>
+</ol>
+<h1 id="使用GitHub-Pages建立博客"><a href="#使用GitHub-Pages建立博客" class="headerlink" title="使用GitHub Pages建立博客"></a>使用GitHub Pages建立博客</h1><p>GitHub账号建立好之后，就可以方便的使用它提供的Pages服务，GitHub Pages分两种，一种是你的GitHub用户名建立的username.github.io这样的用户&amp;组织页（站），另一种是依附项目的pages。想建立个人博客用的是第一种，形如cytmxk.github.io这样的可访问的站，每个用户名下面只能建立一个。</p>
+<ol>
+<li>github上建立仓库<br>登录后系统，在github首页，点击页面右下角「New Repository」<br><img src="http://upload-images.jianshu.io/upload_images/2171639-e8ed2631cf59673a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></li>
+<li>填写项目信息：<br><strong>project name：</strong>cytmxk.github.io<br>注：Github Pages的Repository名字是特定的，比如我Github账号是cytmxk，那么我Github Pages Repository名字就是cytmxk.github.io。</li>
+</ol>
+<p><img src="http://upload-images.jianshu.io/upload_images/2171639-639555efa70dcc75.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>点击「Create Repository」 完成创建。</p>
+<h1 id="安装和配置Hexo"><a href="#安装和配置Hexo" class="headerlink" title="安装和配置Hexo"></a>安装和配置Hexo</h1><ol>
+<li>执行如下命令安装hexo<pre><code>$ npm install -g hexo
+</code></pre></li>
+<li>搭建本地博客<pre><code>$ hexo init blog
+</code></pre>上面的命令会在当前目录下创建一个blog目录，用来存放构建静态网页的资源，目录结构如下所示：<br><img src="http://upload-images.jianshu.io/upload_images/2171639-b7e22a86ef2ff936.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"><br>其中source文件夹就是用来存放MarkDown文件的，默认会存放一个hello-world.md文件。<br>执行如下命令将source中的MarkDown文件生成相应的html文件：<pre><code>$ hexo generate
+</code></pre>执行上面的命令后，多了一个public目录，该目录就是用来存放生成的html文件，目录结构如下图示：<br><img src="http://upload-images.jianshu.io/upload_images/2171639-1976b2614426314a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"><br>在部署到github上之前，需要将资源库cytmxk.github.io配置到_config.yml文件中，具体配置如下所示：<pre><code>deploy:
+  type: git
+  repo: git@github.com:cytmxk/cytmxk.github.io.git
+  branch: master
+</code></pre>执行如下命令将public文件夹中存放的html文件部署到资源库cytmxk.github.io中：<pre><code>$ hexo deploy
+</code></pre>执行完上面的命令后会生成一个.deploy_git的目录，该目录实际上存放的实一个git资源库，对应的远程资源库就是_config.yml文件中配置的资源库，目录结构如下图所示：<br><img src="http://upload-images.jianshu.io/upload_images/2171639-ff3901fd3e5e9d1a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"><br>打开浏览器输入<a href="https://cytmxk.github.io/" target="_blank" rel="external">https://cytmxk.github.io/</a><br>就可以看到自己的博客首页了，至此一切好像大功告成了，但是还有一个问题没有解决，就是多台电脑之间博客同步的问题。</li>
+</ol>
+<h1 id="多台电脑之间博客同步"><a href="#多台电脑之间博客同步" class="headerlink" title="多台电脑之间博客同步"></a>多台电脑之间博客同步</h1><p>我们通过 hexo deploy会将public目录（html文件）自动push到远程仓库的master分支。但这个对多终端博客同步没有任何意义，因为我们每次hexo generate都会根据source目录下的markdown源文件重新生成html文件，所以解决问题的关键是怎么同步source目录下的源文件，不仅如此，还有配置文件_config.yml，依赖包记录文件package.json，scanffolds目录，themes目录。</p>
+<ol>
+<li>首先我们进入到博客系统的根目录，比如blog目录，这里边有个.gitignore文件（如果该文件不存在，自己创建一个），里边默认已经把该忽略的目录文件都写好了，里边内容如下：<br><img src="http://upload-images.jianshu.io/upload_images/2171639-0211fb04f82bc283.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></li>
+<li>然后在blog目录初始化仓库，切换到source分支，关联远程仓库，并push到远程仓库的source分支：<pre><code>$ cd blog
+$ git init
+$ git checkout -b source
+$ git add .
+$ git commit -m &quot;first commit&quot;
+$ git remote add origin git@github.com:cytmxk/cytmxk.github.io.git
+$ git push origin source
+</code></pre></li>
+<li>操作完成后，在另外一台电脑上，首先按照上面的进行环境配置，然后创建<br>注意不要再执行：<pre><code>$ hexo init blog
+</code></pre>取而代之的是<pre><code>$ git clone -b source git@github.com:cytmxk/cytmxk.github.io.git
+$ npm install //根据package.json来下载依赖包
+</code></pre>执行上面的命令就把远程仓库的source分支克隆下来并且安装依赖包。接下来我们就可以继续写博客了<pre><code>$ hexo new &quot;about hexo sync&quot;
+$ hexo generate$ hexo deploy
+$ git add .$ git commit -m &quot;add blog&quot;
+$ git push origin source
+</code></pre>这样就完成了多终端的博客同步。</li>
+</ol>
+<h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><ol>
+<li>执行 hexo deploy 报错，如下图所示：<br><img src="http://upload-images.jianshu.io/upload_images/2171639-69c9d99139a9de76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"><br>上面的报错是由于依赖包hexo-deployer-git没有安装，所以执行如下命令安装即可：<pre><code>$ npm install hexo-deployer-git --save
+</code></pre></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/01/Hexo-Github静态博客搭建/" data-id="ciqgiwu6400003bjf7vc7qcd7" class="article-share-link">Partager</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/07/10/一个电脑对应两个Github帐户/">一个电脑对应两个Github帐户</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/08/自定义LED点阵屏View/">自定义LED点阵屏View</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/06/自定义实现不规则形状的View/">自定义实现不规则形状的View</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/01/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/01/Hexo-Github静态博客搭建/">Hexo-Github静态博客搭建</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

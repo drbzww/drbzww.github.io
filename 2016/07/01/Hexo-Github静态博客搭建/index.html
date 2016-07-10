@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Hexo-Github静态博客搭建 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="环境配置
+前言Hexo是一个基于Node.js的静态博客程序，可以方便的生成静态网页托管在github和Heroku上。作者是来自台湾的tommy351。
+
+安装Node.jsNode.js下载地址Node.js安装流程安装完成后，执行 node –version和npm –version 命令，如果输出如下图所示结果，就代表安装成功了。git的安装和github账户的注册和配置我在这里就不在赘叙">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo-Github静态博客搭建">
+<meta property="og:url" content="http://yoursite.com/2016/07/01/Hexo-Github静态博客搭建/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="环境配置
+前言Hexo是一个基于Node.js的静态博客程序，可以方便的生成静态网页托管在github和Heroku上。作者是来自台湾的tommy351。
+
+安装Node.jsNode.js下载地址Node.js安装流程安装完成后，执行 node –version和npm –version 命令，如果输出如下图所示结果，就代表安装成功了。git的安装和github账户的注册和配置我在这里就不在赘叙">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2171639-80d7438a35b6e66a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2171639-e8ed2631cf59673a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2171639-639555efa70dcc75.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2171639-b7e22a86ef2ff936.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2171639-1976b2614426314a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2171639-ff3901fd3e5e9d1a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2171639-0211fb04f82bc283.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2171639-69c9d99139a9de76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-07-01T12:59:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo-Github静态博客搭建">
+<meta name="twitter:description" content="环境配置
+前言Hexo是一个基于Node.js的静态博客程序，可以方便的生成静态网页托管在github和Heroku上。作者是来自台湾的tommy351。
+
+安装Node.jsNode.js下载地址Node.js安装流程安装完成后，执行 node –version和npm –version 命令，如果输出如下图所示结果，就代表安装成功了。git的安装和github账户的注册和配置我在这里就不在赘叙">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2171639-80d7438a35b6e66a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Hexo-Github静态博客搭建" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/01/Hexo-Github静态博客搭建/" class="article-date">
+  <time datetime="2016-07-01T09:02:36.000Z" itemprop="datePublished">2016-07-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Hexo-Github静态博客搭建
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><ol>
+<li><p>前言<br>Hexo是一个基于Node.js的静态博客程序，可以方便的生成静态网页托管在github和Heroku上。作者是来自台湾的<a href="https://github.com/hexojs/hexo" target="_blank" rel="external">tommy351</a>。</p>
+</li>
+<li><p>安装Node.js<br><a href="https://nodejs.org/download/" target="_blank" rel="external">Node.js下载地址</a><br><a href="http://www.w3cschool.cc/nodejs/nodejs-install-setup.html" target="_blank" rel="external">Node.js安装流程</a><br>安装完成后，执行 node –version和npm –version 命令，如果输出如下图所示结果，就代表安装成功了。<br><img src="http://upload-images.jianshu.io/upload_images/2171639-80d7438a35b6e66a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"><br>git的安装和github账户的注册和配置我在这里就不在赘叙了。</p>
+</li>
+</ol>
+<h1 id="使用GitHub-Pages建立博客"><a href="#使用GitHub-Pages建立博客" class="headerlink" title="使用GitHub Pages建立博客"></a>使用GitHub Pages建立博客</h1><p>GitHub账号建立好之后，就可以方便的使用它提供的Pages服务，GitHub Pages分两种，一种是你的GitHub用户名建立的username.github.io这样的用户&amp;组织页（站），另一种是依附项目的pages。想建立个人博客用的是第一种，形如cytmxk.github.io这样的可访问的站，每个用户名下面只能建立一个。</p>
+<ol>
+<li>github上建立仓库<br>登录后系统，在github首页，点击页面右下角「New Repository」<br><img src="http://upload-images.jianshu.io/upload_images/2171639-e8ed2631cf59673a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></li>
+<li>填写项目信息：<br><strong>project name：</strong>cytmxk.github.io<br>注：Github Pages的Repository名字是特定的，比如我Github账号是cytmxk，那么我Github Pages Repository名字就是cytmxk.github.io。</li>
+</ol>
+<p><img src="http://upload-images.jianshu.io/upload_images/2171639-639555efa70dcc75.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>点击「Create Repository」 完成创建。</p>
+<h1 id="安装和配置Hexo"><a href="#安装和配置Hexo" class="headerlink" title="安装和配置Hexo"></a>安装和配置Hexo</h1><ol>
+<li>执行如下命令安装hexo<pre><code>$ npm install -g hexo
+</code></pre></li>
+<li>搭建本地博客<pre><code>$ hexo init blog
+</code></pre>上面的命令会在当前目录下创建一个blog目录，用来存放构建静态网页的资源，目录结构如下所示：<br><img src="http://upload-images.jianshu.io/upload_images/2171639-b7e22a86ef2ff936.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"><br>其中source文件夹就是用来存放MarkDown文件的，默认会存放一个hello-world.md文件。<br>执行如下命令将source中的MarkDown文件生成相应的html文件：<pre><code>$ hexo generate
+</code></pre>执行上面的命令后，多了一个public目录，该目录就是用来存放生成的html文件，目录结构如下图示：<br><img src="http://upload-images.jianshu.io/upload_images/2171639-1976b2614426314a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"><br>在部署到github上之前，需要将资源库cytmxk.github.io配置到_config.yml文件中，具体配置如下所示：<pre><code>deploy:
+  type: git
+  repo: git@github.com:cytmxk/cytmxk.github.io.git
+  branch: master
+</code></pre>执行如下命令将public文件夹中存放的html文件部署到资源库cytmxk.github.io中：<pre><code>$ hexo deploy
+</code></pre>执行完上面的命令后会生成一个.deploy_git的目录，该目录实际上存放的实一个git资源库，对应的远程资源库就是_config.yml文件中配置的资源库，目录结构如下图所示：<br><img src="http://upload-images.jianshu.io/upload_images/2171639-ff3901fd3e5e9d1a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"><br>打开浏览器输入<a href="https://cytmxk.github.io/" target="_blank" rel="external">https://cytmxk.github.io/</a><br>就可以看到自己的博客首页了，至此一切好像大功告成了，但是还有一个问题没有解决，就是多台电脑之间博客同步的问题。</li>
+</ol>
+<h1 id="多台电脑之间博客同步"><a href="#多台电脑之间博客同步" class="headerlink" title="多台电脑之间博客同步"></a>多台电脑之间博客同步</h1><p>我们通过 hexo deploy会将public目录（html文件）自动push到远程仓库的master分支。但这个对多终端博客同步没有任何意义，因为我们每次hexo generate都会根据source目录下的markdown源文件重新生成html文件，所以解决问题的关键是怎么同步source目录下的源文件，不仅如此，还有配置文件_config.yml，依赖包记录文件package.json，scanffolds目录，themes目录。</p>
+<ol>
+<li>首先我们进入到博客系统的根目录，比如blog目录，这里边有个.gitignore文件（如果该文件不存在，自己创建一个），里边默认已经把该忽略的目录文件都写好了，里边内容如下：<br><img src="http://upload-images.jianshu.io/upload_images/2171639-0211fb04f82bc283.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></li>
+<li>然后在blog目录初始化仓库，切换到source分支，关联远程仓库，并push到远程仓库的source分支：<pre><code>$ cd blog
+$ git init
+$ git checkout -b source
+$ git add .
+$ git commit -m &quot;first commit&quot;
+$ git remote add origin git@github.com:cytmxk/cytmxk.github.io.git
+$ git push origin source
+</code></pre></li>
+<li>操作完成后，在另外一台电脑上，首先按照上面的进行环境配置，然后创建<br>注意不要再执行：<pre><code>$ hexo init blog
+</code></pre>取而代之的是<pre><code>$ git clone -b source git@github.com:cytmxk/cytmxk.github.io.git
+$ npm install //根据package.json来下载依赖包
+</code></pre>执行上面的命令就把远程仓库的source分支克隆下来并且安装依赖包。接下来我们就可以继续写博客了<pre><code>$ hexo new &quot;about hexo sync&quot;
+$ hexo generate$ hexo deploy
+$ git add .$ git commit -m &quot;add blog&quot;
+$ git push origin source
+</code></pre>这样就完成了多终端的博客同步。</li>
+</ol>
+<h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><ol>
+<li>执行 hexo deploy 报错，如下图所示：<br><img src="http://upload-images.jianshu.io/upload_images/2171639-69c9d99139a9de76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"><br>上面的报错是由于依赖包hexo-deployer-git没有安装，所以执行如下命令安装即可：<pre><code>$ npm install hexo-deployer-git --save
+</code></pre></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/01/Hexo-Github静态博客搭建/" data-id="ciqgiwu6400003bjf7vc7qcd7" class="article-share-link">Partager</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/01/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/07/10/一个电脑对应两个Github帐户/">一个电脑对应两个Github帐户</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/08/自定义LED点阵屏View/">自定义LED点阵屏View</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/06/自定义实现不规则形状的View/">自定义实现不规则形状的View</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/01/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/01/Hexo-Github静态博客搭建/">Hexo-Github静态博客搭建</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

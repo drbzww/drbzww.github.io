@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>自定义实现不规则形状的View | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="概述在一些项目中要求将头像显示成圆形或者其他的一些不规则形状的图形，我们不可能为了实现这样的效果，在代码中将图像进行裁剪，这样的话也显得太low了，也没有扩展性。一般实现自定义形状的图形有三种方式：PorterDuffXfermode 、BitmapShader、ClipPath。下面我都会分别说明，我这里的实现使用的是第一种方式，实现效果图如下所示：
+
+PorterDuffXfermode 方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义实现不规则形状的View">
+<meta property="og:url" content="http://yoursite.com/2016/07/06/自定义实现不规则形状的View/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="概述在一些项目中要求将头像显示成圆形或者其他的一些不规则形状的图形，我们不可能为了实现这样的效果，在代码中将图像进行裁剪，这样的话也显得太low了，也没有扩展性。一般实现自定义形状的图形有三种方式：PorterDuffXfermode 、BitmapShader、ClipPath。下面我都会分别说明，我这里的实现使用的是第一种方式，实现效果图如下所示：
+
+PorterDuffXfermode 方式">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2171639-59cf0838a21660bf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2171639-da149a0c83d741c6?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-07-09T17:04:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义实现不规则形状的View">
+<meta name="twitter:description" content="概述在一些项目中要求将头像显示成圆形或者其他的一些不规则形状的图形，我们不可能为了实现这样的效果，在代码中将图像进行裁剪，这样的话也显得太low了，也没有扩展性。一般实现自定义形状的图形有三种方式：PorterDuffXfermode 、BitmapShader、ClipPath。下面我都会分别说明，我这里的实现使用的是第一种方式，实现效果图如下所示：
+
+PorterDuffXfermode 方式">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2171639-59cf0838a21660bf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-自定义实现不规则形状的View" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/06/自定义实现不规则形状的View/" class="article-date">
+  <time datetime="2016-07-06T06:05:11.000Z" itemprop="datePublished">2016-07-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      自定义实现不规则形状的View
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>在一些项目中要求将头像显示成圆形或者其他的一些不规则形状的图形，我们不可能为了实现这样的效果，在代码中将图像进行裁剪，这样的话也显得太low了，也没有扩展性。一般实现自定义形状的图形有三种方式：PorterDuffXfermode 、BitmapShader、ClipPath。下面我都会分别说明，我这里的实现使用的是第一种方式，实现效果图如下所示：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2171639-59cf0838a21660bf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="运行效果图"></p>
+<h1 id="PorterDuffXfermode-方式"><a href="#PorterDuffXfermode-方式" class="headerlink" title="PorterDuffXfermode 方式"></a>PorterDuffXfermode 方式</h1><p>这是由Tomas Proter和 Tom Duff命名的图像转换模式，它有16个枚举值来控制Canvas上 上下两个图层的交互（先画的图层在下层）。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2171639-da149a0c83d741c6?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="蓝色的在上层"></p>
+<pre><code>1.PorterDuff.Mode.CLEAR　　 　所绘制不会提交到画布上 
+2.PorterDuff.Mode.SRC　　　　　显示上层绘制图片 
+3.PorterDuff.Mode.DST　　　　　显示下层绘制图片 
+4.PorterDuff.Mode.SRC_OVER　　正常绘制显示，上下层绘制叠盖。 
+5.PorterDuff.Mode.DST_OVER　　上下层都显示。下层居上显示。 
+6.PorterDuff.Mode.SRC_IN　　　　取两层绘制交集。显示上层。 
+7.PorterDuff.Mode.DST_IN　　　　取两层绘制交集。显示下层。 
+8.PorterDuff.Mode.SRC_OUT　　　取上层绘制非交集部分。 
+9.PorterDuff.Mode.DST_OUT　　　取下层绘制非交集部分。 
+10.PorterDuff.Mode.SRC_ATOP　　取下层非交集部分与上层交集部分 
+11.PorterDuff.Mode.DST_ATOP　　取上层非交集部分与下层交集部分 
+12.PorterDuff.Mode.XOR　　　　　异或：去除两图层交集部分 
+13.PorterDuff.Mode.DARKEN　　　取两图层全部区域，交集部分颜色加深 
+14.PorterDuff.Mode.LIGHTEN　　　取两图层全部，点亮交集部分颜色 
+15.PorterDuff.Mode.MULTIPLY　　取两图层交集部分叠加后颜色 
+16.PorterDuff.Mode.SCREEN　　　 取两图层全部区域，交集部分变为透明色
+</code></pre><ol>
+<li><p>实现思路<br>会玩Ps的朋友肯定知道，如果有两个图层，我们想把上面图层裁切成下面图层的形状，只需要调下面图层的选区，然后选中上面的图层，蒙板就可以了。那么我们就可以利用PorterDuff.Mode的 SRC_IN 或 DST_IN 来取得两个图层的交集，从而把图像裁切成我们想要的各种样式。我们需要一个形状图层和一个显示图层。并且显示图层要完全覆盖形状图层。</p>
+</li>
+<li><p>代码实现与详解<br>继承ImageView，复写了imageview的四个setImage方法（为了更好的兼容性），在setImageDrawable方法中得到前景图片（即显示图层）：</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public void setImageBitmap(Bitmap bm) &#123;</div><div class="line">    Log.d(TAG, &quot;setImageBitmap bm = &quot; + bm);</div><div class="line">    super.setImageBitmap(bm);</div><div class="line">    mBitmap = bm;</div><div class="line">    setBackgroundBmp();</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public void setImageDrawable(Drawable drawable) &#123;</div><div class="line">    Log.d(TAG, &quot;setImageDrawable drawable = &quot; + drawable);</div><div class="line">    super.setImageDrawable(drawable);</div><div class="line">    mBitmap = getBitmapFromDrawable(drawable);</div><div class="line">    setBackgroundBmp();</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public void setImageResource(int resId) &#123;</div><div class="line">    Log.d(TAG, &quot;setImageResource resId = &quot; + resId);</div><div class="line">    super.setImageResource(resId);</div><div class="line">    mBitmap = getBitmapFromDrawable(getDrawable());</div><div class="line">    setBackgroundBmp();</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public void setImageURI(Uri uri) &#123;</div><div class="line">    super.setImageURI(uri);</div><div class="line">    Log.d(TAG, &quot;setImageURI uri = &quot; + uri);</div><div class="line">    mBitmap = getBitmapFromDrawable(getDrawable());</div><div class="line">    setBackgroundBmp();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后获取背景图片（即形状图层）并且通过调用invalidate()使View被重绘：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">private void setBackgroundBmp()&#123;</div><div class="line">    if(null==getBackground())&#123;</div><div class="line">        throw new IllegalArgumentException(String.format(&quot;background is null.&quot;));</div><div class="line">    &#125;else&#123;</div><div class="line">        mBackgroundBmp = getBitmapFromDrawable(getBackground());</div><div class="line">        invalidate();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在重绘之前利用PorterDuff.Mode的 SRC_IN 或 DST_IN 取形状图层和显示图层交集，从而得到自定义形状的图片：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">protected void onSizeChanged(int w, int h, int oldw, int oldh) &#123;</div><div class="line">    super.onSizeChanged(w, h, oldw, oldh);</div><div class="line">    mViewWidth = w;</div><div class="line">    mViewHeight = h;</div><div class="line">&#125;</div><div class="line"></div><div class="line">private Bitmap createImage()</div><div class="line">&#123;</div><div class="line">    mBackgroundBmp = getCenterCropBitmap(mBackgroundBmp, mViewWidth, mViewHeight);</div><div class="line">    mBitmap = getCenterCropBitmap(mBitmap, mViewWidth, mViewHeight);</div><div class="line"></div><div class="line">    int bmpWidth = mBitmap.getWidth();</div><div class="line">    int bmpHeight = mBitmap.getHeight();</div><div class="line"></div><div class="line">    Paint paint = new Paint();</div><div class="line">    paint.setAntiAlias(true);</div><div class="line">    Bitmap finalBmp = Bitmap.createBitmap(mViewWidth,mViewHeight, Bitmap.Config.ARGB_8888);</div><div class="line">    Canvas canvas = new Canvas(finalBmp);</div><div class="line">    canvas.drawBitmap(mBackgroundBmp, 0, 0, paint);</div><div class="line">    paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));</div><div class="line">    canvas.drawBitmap(mBitmap, (mViewWidth - bmpWidth) / 2, (mViewHeight - bmpHeight) / 2, paint);</div><div class="line">    return finalBmp;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 类比ScaleType.CENTER_CROP</div><div class="line"> */</div><div class="line">private Bitmap getCenterCropBitmap(Bitmap src, float rectWidth, float rectHeight) &#123;</div><div class="line"></div><div class="line">    float srcRatio = ((float) src.getWidth()) / src.getHeight();</div><div class="line">    float rectRadio = rectWidth / rectHeight;</div><div class="line">    if (srcRatio &lt; rectRadio) &#123;</div><div class="line">        return Bitmap.createScaledBitmap(src, (int)rectWidth, (int)((rectWidth / src.getWidth()) * src.getHeight()), false);</div><div class="line">    &#125; else &#123;</div><div class="line">        return Bitmap.createScaledBitmap(src, (int)((rectHeight / src.getHeight()) * src.getWidth()), (int)rectHeight, false);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>得到要绘制的图片后，就是通过重写onDraw方法进行绘制：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">protected void onDraw(Canvas canvas) &#123;</div><div class="line">    if(mBitmap!=null &amp;&amp; mBackgroundBmp!=null)&#123;</div><div class="line">        canvas.drawBitmap(createImage(), 0, 0, null);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后就是在布局中使用了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;com.cytmxk.customview.customshapeview.AvatarView</div><div class="line">    android:layout_marginLeft=&quot;20dp&quot;</div><div class="line">    android:layout_width=&quot;100dp&quot;</div><div class="line">    android:layout_height=&quot;100dp&quot;</div><div class="line">    android:background=&quot;@drawable/avatar_view_rectangle_shape_two&quot;</div><div class="line">    android:src=&quot;@drawable/avatar_view2&quot; /&gt;</div></pre></td></tr></table></figure></p>
+<p>这里的android:background定义的就是我们的形状图层，它可以是一个xxx_shape.xml的布局文件，比如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</div><div class="line">&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</div><div class="line">    android:shape=&quot;rectangle&quot; &gt;</div><div class="line">    &lt;solid android:color=&quot;#fff&quot; &gt;&lt;/solid&gt;</div><div class="line">    &lt;corners android:radius=&quot;10dp&quot; /&gt;</div><div class="line">    &lt;size android:width=&quot;100dp&quot;</div><div class="line">        android:height=&quot;100dp&quot;/&gt;</div><div class="line">&lt;/shape&gt;</div></pre></td></tr></table></figure></p>
+<h1 id="BitmapShader方式"><a href="#BitmapShader方式" class="headerlink" title="BitmapShader方式"></a>BitmapShader方式</h1><p>通过Bitmap得到一个着色器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);</div><div class="line">参数 </div><div class="line">①　mBitmap：你要绘制的图片</div><div class="line">②　emun Shader.TileMode 定义了三种着色模式： </div><div class="line">　　 CLAMP 拉伸</div><div class="line"> 　　REPEAT 重复</div><div class="line"> 　　MIRROR 镜像</div><div class="line"> 好比你拿一张分辨率和电脑屏幕不一样的图片设置为壁纸时，选择的三种方式一样。</div></pre></td></tr></table></figure></p>
+<p>给画笔设置着色器，这样画笔就能在 canvas的相应形状上画出我们的图片Bitmap:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mBitmapPaint.setShader(mBitmapShader);</div><div class="line">canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mBitmapPaint);</div></pre></td></tr></table></figure></p>
+<p>当然我们一般设置的模式为CLAMP 拉伸（当图片mBitmap的宽高小于View的时候要拉伸），但是我们一般不想要拉伸（变形了），所以一般还要给着色器设置一个matrix，去适当的放大或者缩小图片。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mBitmapShader.setLocalMatrix(mShaderMatrix);</div></pre></td></tr></table></figure></p>
+<p>著名的项目<a href="https://github.com/hdodenhof/CircleImageView" target="_blank" rel="external">CircleImageView</a>就是用着色器实现的，实现思路上面已经说了，代码有详细的注释，理解起来应该没什么问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div><div class="line">305</div><div class="line">306</div><div class="line">307</div><div class="line">308</div><div class="line">309</div><div class="line">310</div><div class="line">311</div><div class="line">312</div><div class="line">313</div><div class="line">314</div><div class="line">315</div><div class="line">316</div></pre></td><td class="code"><pre><div class="line">public class CircleImageView extends ImageView &#123;</div><div class="line">    //缩放类型</div><div class="line">    private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;</div><div class="line">    private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;</div><div class="line">    private static final int COLORDRAWABLE_DIMENSION = 2;</div><div class="line">    // 默认边界宽度</div><div class="line">    private static final int DEFAULT_BORDER_WIDTH = 0;</div><div class="line">    // 默认边界颜色</div><div class="line">    private static final int DEFAULT_BORDER_COLOR = Color.BLACK;</div><div class="line">    private static final boolean DEFAULT_BORDER_OVERLAY = false;</div><div class="line"></div><div class="line">    private final RectF mDrawableRect = new RectF();</div><div class="line">    private final RectF mBorderRect = new RectF();</div><div class="line"></div><div class="line">    private final Matrix mShaderMatrix = new Matrix();</div><div class="line">    //这个画笔最重要的是关联了mBitmapShader 使canvas在执行的时候可以切割原图片(mBitmapShader是关联了原图的bitmap的)</div><div class="line">    private final Paint mBitmapPaint = new Paint();</div><div class="line">    //这个描边，则与本身的原图bitmap没有任何关联，</div><div class="line">    private final Paint mBorderPaint = new Paint();</div><div class="line">    //这里定义了 圆形边缘的默认宽度和颜色</div><div class="line">    private int mBorderColor = DEFAULT_BORDER_COLOR;</div><div class="line">    private int mBorderWidth = DEFAULT_BORDER_WIDTH;</div><div class="line"></div><div class="line">    private Bitmap mBitmap;</div><div class="line">    private BitmapShader mBitmapShader; // 位图渲染</div><div class="line">    private int mBitmapWidth;   // 位图宽度</div><div class="line">    private int mBitmapHeight;  // 位图高度</div><div class="line"></div><div class="line">    private float mDrawableRadius;// 图片半径</div><div class="line">    private float mBorderRadius;// 带边框的的图片半径</div><div class="line"></div><div class="line">    private ColorFilter mColorFilter;</div><div class="line">    //初始false</div><div class="line">    private boolean mReady;</div><div class="line">    private boolean mSetupPending;</div><div class="line">    private boolean mBorderOverlay;</div><div class="line">    //构造函数</div><div class="line">    public CircleImageView(Context context) &#123;</div><div class="line">        super(context);</div><div class="line">        init();</div><div class="line">    &#125;</div><div class="line">    //构造函数</div><div class="line">    public CircleImageView(Context context, AttributeSet attrs) &#123;</div><div class="line">        this(context, attrs, 0);</div><div class="line">    &#125;</div><div class="line">    /**</div><div class="line">     * 构造函数</div><div class="line">     */</div><div class="line">    public CircleImageView(Context context, AttributeSet attrs, int defStyle) &#123;</div><div class="line">        super(context, attrs, defStyle);</div><div class="line">        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0);</div><div class="line">        //通过TypedArray提供的一系列方法getXXXX取得我们在xml里定义的参数值；</div><div class="line">        // 获取边界的宽度</div><div class="line">        mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_border_width, DEFAULT_BORDER_WIDTH);</div><div class="line">        // 获取边界的颜色</div><div class="line">        mBorderColor = a.getColor(R.styleable.CircleImageView_border_color, DEFAULT_BORDER_COLOR);</div><div class="line">        mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_border_overlay, DEFAULT_BORDER_OVERLAY);</div><div class="line">        //调用 recycle() 回收TypedArray,以便后面重用</div><div class="line">        a.recycle();</div><div class="line">        init();</div><div class="line">    &#125;</div><div class="line">    /**</div><div class="line">     * 作用就是保证第一次执行setup函数里下面代码要在构造函数执行完毕时调用</div><div class="line">     */</div><div class="line">    private void init() &#123;</div><div class="line">        //在这里ScaleType被强制设定为CENTER_CROP，就是将图片水平垂直居中，进行缩放。</div><div class="line">        super.setScaleType(SCALE_TYPE);</div><div class="line">        mReady = true;</div><div class="line"></div><div class="line">        if (mSetupPending) &#123;</div><div class="line">            setup();</div><div class="line">            mSetupPending = false;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public ScaleType getScaleType() &#123;</div><div class="line">        return SCALE_TYPE;</div><div class="line">    &#125;</div><div class="line">    /**</div><div class="line">     * 这里明确指出 此种imageview 只支持CENTER_CROP 这一种属性</div><div class="line">     *</div><div class="line">     * @param scaleType</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public void setScaleType(ScaleType scaleType) &#123;</div><div class="line">        if (scaleType != SCALE_TYPE) &#123;</div><div class="line">            throw new IllegalArgumentException(String.format(&quot;ScaleType %s not supported.&quot;, scaleType));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void setAdjustViewBounds(boolean adjustViewBounds) &#123;</div><div class="line">        if (adjustViewBounds) &#123;</div><div class="line">            throw new IllegalArgumentException(&quot;adjustViewBounds not supported.&quot;);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void onDraw(Canvas canvas) &#123;</div><div class="line">        //如果图片不存在就不画</div><div class="line">        if (getDrawable() == null) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        //绘制内圆形 图片 画笔为mBitmapPaint</div><div class="line">        canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mBitmapPaint);</div><div class="line">        //如果圆形边缘的宽度不为0 我们还要绘制带边界的外圆形 边界画笔为mBorderPaint</div><div class="line">        if (mBorderWidth != 0) &#123;</div><div class="line">            canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPaint);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void onSizeChanged(int w, int h, int oldw, int oldh) &#123;</div><div class="line">        super.onSizeChanged(w, h, oldw, oldh);</div><div class="line">        setup();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public int getBorderColor() &#123;</div><div class="line">        return mBorderColor;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setBorderColor(int borderColor) &#123;</div><div class="line">        if (borderColor == mBorderColor) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mBorderColor = borderColor;</div><div class="line">        mBorderPaint.setColor(mBorderColor);</div><div class="line">        invalidate();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setBorderColorResource( int borderColorRes) &#123;</div><div class="line">        setBorderColor(getContext().getResources().getColor(borderColorRes));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public int getBorderWidth() &#123;</div><div class="line">        return mBorderWidth;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setBorderWidth(int borderWidth) &#123;</div><div class="line">        if (borderWidth == mBorderWidth) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mBorderWidth = borderWidth;</div><div class="line">        setup();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean isBorderOverlay() &#123;</div><div class="line">        return mBorderOverlay;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setBorderOverlay(boolean borderOverlay) &#123;</div><div class="line">        if (borderOverlay == mBorderOverlay) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mBorderOverlay = borderOverlay;</div><div class="line">        setup();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 以下四个函数都是</div><div class="line">     * 复写ImageView的setImageXxx()方法</div><div class="line">     * 注意这个函数先于构造函数调用之前调用</div><div class="line">     * @param bm</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public void setImageBitmap(Bitmap bm) &#123;</div><div class="line">        super.setImageBitmap(bm);</div><div class="line">        mBitmap = bm;</div><div class="line">        setup();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void setImageDrawable(Drawable drawable) &#123;</div><div class="line">        super.setImageDrawable(drawable);</div><div class="line">        mBitmap = getBitmapFromDrawable(drawable);</div><div class="line">        setup();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void setImageResource( int resId) &#123;</div><div class="line">        super.setImageResource(resId);</div><div class="line">        mBitmap = getBitmapFromDrawable(getDrawable());</div><div class="line">        setup();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void setImageURI(Uri uri) &#123;</div><div class="line">        super.setImageURI(uri);</div><div class="line">        mBitmap = getBitmapFromDrawable(getDrawable());</div><div class="line">        setup();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void setColorFilter(ColorFilter cf) &#123;</div><div class="line">        if (cf == mColorFilter) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mColorFilter = cf;</div><div class="line">        mBitmapPaint.setColorFilter(mColorFilter);</div><div class="line">        invalidate();</div><div class="line">    &#125;</div><div class="line">    /**</div><div class="line">     * Drawable转Bitmap</div><div class="line">     * @param drawable</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    private Bitmap getBitmapFromDrawable(Drawable drawable) &#123;</div><div class="line">        if (drawable == null) &#123;</div><div class="line">            return null;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (drawable instanceof BitmapDrawable) &#123;</div><div class="line">            //通常来说 我们的代码就是执行到这里就返回了。返回的就是我们最原始的bitmap</div><div class="line">            return ((BitmapDrawable) drawable).getBitmap();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        try &#123;</div><div class="line">            Bitmap bitmap;</div><div class="line"></div><div class="line">            if (drawable instanceof ColorDrawable) &#123;</div><div class="line">                bitmap = Bitmap.createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG);</div><div class="line">            &#125; else &#123;</div><div class="line">                bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), BITMAP_CONFIG);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            Canvas canvas = new Canvas(bitmap);</div><div class="line">            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());</div><div class="line">            drawable.draw(canvas);</div><div class="line">            return bitmap;</div><div class="line">        &#125; catch (OutOfMemoryError e) &#123;</div><div class="line">            return null;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    /**</div><div class="line">     * 这个函数很关键，进行图片画笔边界画笔(Paint)一些重绘参数初始化：</div><div class="line">     * 构建渲染器BitmapShader用Bitmap来填充绘制区域,设置样式以及内外圆半径计算等，</div><div class="line">     * 以及调用updateShaderMatrix()函数和 invalidate()函数；</div><div class="line">     */</div><div class="line">    private void setup() &#123;</div><div class="line">        //因为mReady默认值为false,所以第一次进这个函数的时候if语句为真进入括号体内</div><div class="line">        //设置mSetupPending为true然后直接返回，后面的代码并没有执行。</div><div class="line">        if (!mReady) &#123;</div><div class="line">            mSetupPending = true;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        //防止空指针异常</div><div class="line">        if (mBitmap == null) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        // 构建渲染器，用mBitmap位图来填充绘制区域,参数值代表如果图片太小的话 就直接拉伸</div><div class="line">        mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);</div><div class="line">        // 设置图片画笔反锯齿</div><div class="line">        mBitmapPaint.setAntiAlias(true);</div><div class="line">        // 设置图片画笔渲染器</div><div class="line">        mBitmapPaint.setShader(mBitmapShader);</div><div class="line">        // 设置边界画笔样式</div><div class="line">        mBorderPaint.setStyle(Paint.Style.STROKE);//设画笔为空心</div><div class="line">        mBorderPaint.setAntiAlias(true);</div><div class="line">        mBorderPaint.setColor(mBorderColor);    //画笔颜色</div><div class="line">        mBorderPaint.setStrokeWidth(mBorderWidth);//画笔边界宽度</div><div class="line">        //这个地方是取的原图片的宽高</div><div class="line">        mBitmapHeight = mBitmap.getHeight();</div><div class="line">        mBitmapWidth = mBitmap.getWidth();</div><div class="line">        // 设置含边界显示区域，取的是CircleImageView的布局实际大小，为方形</div><div class="line">        mBorderRect.set(0, 0, getWidth(), getHeight());</div><div class="line">        //计算 圆形带边界部分（外圆）的最小半径，取mBorderRect的宽高减去一个边缘大小的一半的较小值</div><div class="line">        mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2, (mBorderRect.width() - mBorderWidth) / 2);</div><div class="line">        // 初始图片显示区域为mBorderRect（CircleImageView的布局实际大小）</div><div class="line">        mDrawableRect.set(mBorderRect);</div><div class="line">        if (!mBorderOverlay) &#123;</div><div class="line">            //demo里始终执行</div><div class="line">            //通过inset方法  使得图片显示的区域从mBorderRect大小上下左右内移边界的宽度形成区域</div><div class="line">            mDrawableRect.inset(mBorderWidth, mBorderWidth);</div><div class="line">        &#125;</div><div class="line">        //这里计算的是内圆的最小半径，也即去除边界宽度的半径</div><div class="line">        mDrawableRadius = Math.min(mDrawableRect.height() / 2, mDrawableRect.width() / 2);</div><div class="line">        //设置渲染器的变换矩阵也即是mBitmap用何种缩放形式填充</div><div class="line">        updateShaderMatrix();</div><div class="line">        //手动触发ondraw()函数 完成最终的绘制</div><div class="line">        invalidate();</div><div class="line">    &#125;</div><div class="line">    /**</div><div class="line">     * 这个函数为设置BitmapShader的Matrix参数，设置最小缩放比例，平移参数。</div><div class="line">     * 作用：保证图片损失度最小和始终绘制图片正中央的那部分</div><div class="line">     */</div><div class="line">    private void updateShaderMatrix() &#123;</div><div class="line">        float scale;</div><div class="line">        float dx = 0;</div><div class="line">        float dy = 0;</div><div class="line"></div><div class="line">        mShaderMatrix.set(null);</div><div class="line">        // 这里不好理解 这个不等式也就是(mBitmapWidth / mDrawableRect.width()) &gt; (mBitmapHeight / mDrawableRect.height())</div><div class="line">        //取最小的缩放比例</div><div class="line">        if (mBitmapWidth * mDrawableRect.height() &gt; mDrawableRect.width() * mBitmapHeight) &#123;</div><div class="line">            //y轴缩放 x轴平移 使得图片的y轴方向的边的尺寸缩放到图片显示区域（mDrawableRect）一样）</div><div class="line">            scale = mDrawableRect.height() / (float) mBitmapHeight;</div><div class="line">            dx = (mDrawableRect.width() - mBitmapWidth * scale) * 0.5f;</div><div class="line">        &#125; else &#123;</div><div class="line">            //x轴缩放 y轴平移 使得图片的x轴方向的边的尺寸缩放到图片显示区域（mDrawableRect）一样）</div><div class="line">            scale = mDrawableRect.width() / (float) mBitmapWidth;</div><div class="line">            dy = (mDrawableRect.height() - mBitmapHeight * scale) * 0.5f;</div><div class="line">        &#125;</div><div class="line">        // shaeder的变换矩阵，我们这里主要用于放大或者缩小。</div><div class="line">        mShaderMatrix.setScale(scale, scale);</div><div class="line">        // 平移</div><div class="line">        mShaderMatrix.postTranslate((int) (dx + 0.5f) + mDrawableRect.left, (int) (dy + 0.5f) + mDrawableRect.top);</div><div class="line">        // 设置变换矩阵</div><div class="line">        mBitmapShader.setLocalMatrix(mShaderMatrix);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="ClipPath方式"><a href="#ClipPath方式" class="headerlink" title="ClipPath方式"></a>ClipPath方式</h1><p>以下代码可以把图形bitmap画在一个圆上，得到一个圆形头像：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">protected void onDraw(Canvas canvas) &#123;</div><div class="line">    Path path = new Path(); </div><div class="line">    //按照逆时针方向添加一个圆</div><div class="line">    path.addCircle(float x, float y, mRadius, Direction.CCW);</div><div class="line">    //先将canvas保存</div><div class="line">    canvas.save();</div><div class="line">    //把canvas修剪成指定的路径区域</div><div class="line">    canvas.clipPath(path);</div><div class="line">    //绘制图形Bitmap</div><div class="line">    canvas.drawBitmap(Bitmap,float left, float top, mPaint);</div><div class="line">    //恢复Canvas</div><div class="line">    canvas.restore();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这种方式明显最简单，你还可以一个个坐标点的添加形成一个路径。但是形状比较复杂的情况下，还是第一种实现比较方便。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/06/自定义实现不规则形状的View/" data-id="ciqgiwu6f00043bjfb1if66fn" class="article-share-link">Partager</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/08/自定义LED点阵屏View/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          自定义LED点阵屏View
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/01/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/07/10/一个电脑对应两个Github帐户/">一个电脑对应两个Github帐户</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/08/自定义LED点阵屏View/">自定义LED点阵屏View</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/06/自定义实现不规则形状的View/">自定义实现不规则形状的View</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/01/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/01/Hexo-Github静态博客搭建/">Hexo-Github静态博客搭建</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
