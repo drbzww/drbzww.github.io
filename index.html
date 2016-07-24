@@ -61,6 +61,238 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-自定义任意形状的水波纹加载View" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/14/自定义任意形状的水波纹加载View/" class="article-date">
+  <time datetime="2016-07-14T03:37:50.000Z" itemprop="datePublished">2016-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/14/自定义任意形状的水波纹加载View/">自定义任意形状的水波纹加载View</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>对于一些耗时操作，例如加载大文件，如果不给用户一个动态加载的友好提示界面，就会让用户感觉应用卡死了，所以今天就来实现一个动态加载的自定义View(WaveProgressView)，先看一下实现后的效果图：<br><img src="http://upload-images.jianshu.io/upload_images/2171639-0edbab323a3e0bc8.gif?imageMogr2/auto-orient/strip" alt="最后效果图"></p>
+<h1 id="实现代码详解"><a href="#实现代码详解" class="headerlink" title="实现代码详解"></a>实现代码详解</h1><ol>
+<li><p>通过自定义属性设置水波颜色、波长、振幅、波的颜色、字体大小、字体颜色、进度条最大值、当前进度值、波动的快慢和波动的方向，也可以通过set方法来实现。<br>自定义属性：</p>
+<pre><code>&lt;declare-styleable name=&quot;WaveProgressView&quot;&gt;
+    &lt;attr name=&quot;wpv_max_progress&quot; format=&quot;integer&quot; /&gt;
+    &lt;attr name=&quot;wpv_current_progress&quot; format=&quot;integer&quot; /&gt;
+    &lt;attr name=&quot;wpv_progress_unit&quot; format=&quot;reference|string&quot; /&gt;
+    &lt;attr name=&quot;wpv_text_color&quot; format=&quot;reference|color&quot; /&gt;
+    &lt;attr name=&quot;wpv_text_size&quot; format=&quot;reference|dimension&quot; /&gt;
+    &lt;attr name=&quot;wpv_wave_color&quot; format=&quot;reference|color&quot; /&gt;
+    &lt;attr name=&quot;wpv_wave_width&quot; format=&quot;reference|dimension&quot; /&gt;
+    &lt;attr name=&quot;wpv_wave_height&quot; format=&quot;reference|dimension&quot; /&gt;
+    &lt;attr name=&quot;wpv_fluctuation_speed&quot; &gt;
+        &lt;enum name=&quot;slow&quot; value=&quot;300&quot; /&gt;
+        &lt;enum name=&quot;normal&quot; value=&quot;200&quot; /&gt;
+        &lt;enum name=&quot;fast&quot; value=&quot;100&quot; /&gt;
+    &lt;/attr&gt;
+    &lt;attr name=&quot;wpv_fluctuation_direction&quot; &gt;
+        &lt;enum name=&quot;left&quot; value=&quot;0&quot; /&gt;
+        &lt;enum name=&quot;right&quot; value=&quot;1&quot; /&gt;
+    &lt;/attr&gt;
+&lt;/declare-styleable&gt;
+</code></pre><p>set方法：</p>
+<pre><code>public void setMaxProgress(int maxProgress) {
+    this.mMaxProgress = maxProgress;
+}
+
+public void setmCurrentProgress(int currentProgress) {
+    this.mCurrentProgress = currentProgress;
+}
+
+public void setProgressUnit(String progressUnit) {
+    this.mProgressUnit = progressUnit;
+}
+
+public void setWaveColor(int waveColor) {
+    this.mWaveColor = waveColor;
+}
+
+public void setTextColor(int textColor) {
+    this.mTextColor = textColor;
+}
+</code></pre></li>
+<li><p>获取背景图片然后将背景置为null</p>
+<pre><code>if (null != getBackground()) {
+    mBackGroundBmp = getBitmapFromDrawable(getBackground());
+    setBackgroundDrawable(null);
+} else {
+    throw new IllegalArgumentException(String.format(&quot;background is null.&quot;));
+}
+</code></pre><p>上面的代码中再获取背景图片后不设置背景为null，会导致背景重复带来的圆角矩形背景圆角处没有被波浪填满的现象。就可以利用PorterDuff.Mode.DST_ATOP（取上层非交集部分与下层交集部分）在后面会将背景图片和绘制的波浪重叠在一起</p>
+</li>
+<li><p>利用二阶贝塞尔曲线绘制波浪<br>关于贝塞尔曲线可以参考<a href="http://www.html-js.com/article/1628" target="_blank" rel="external">贝塞尔曲线扫盲</a><br>1&gt; 首先算出在指定宽度的View中实现波动效果最少要绘制几个波长的贝塞尔曲线：</p>
+<pre><code>mWaveNumber = (int) (mViewWidth / mWaveWidth + 2);
+</code></pre><p>假如View的宽度是波长的2.2倍，那么在指定宽度的View中绘制一个波动的波浪最少需要绘制3.2个波长的贝塞尔曲线，为了方便我就绘制4个波长的贝塞尔曲线，也就是上面代码中加2的原因。<br>2&gt; 根据波浪波动的方向得到绘制贝塞尔曲线的起始点x坐标，如果波浪向左移动的话，那么绘制贝塞尔曲线的起始点x坐标就是VIew左上角x坐标，如果波浪向右移动的话，那么绘制贝塞尔曲线的起始点x坐标就是VIew左上角向左移动一个波长距离后得到的点x坐标。</p>
+<pre><code>switch (mFluctuationDirection) {
+    case LEFT:
+        offset = 0;
+        steps = -TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics());
+        break;
+    case RIGHT:
+        offset = -mWaveWidth;
+        steps = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics());;
+        break;
+}
+</code></pre><p>上面代码中就是对offset初始化（即绘制贝塞尔曲线的起始点x坐标） ，steps 是每一次在水平方向移动的距离。<br>3&gt; 利用Path绘制效果图中的绿色波浪</p>
+<pre><code>Path path = new Path();
+path.moveTo(offset, mCurrentWaveY);
+for (int i = 0; i &lt; mWaveNumber; i++) {
+    path.quadTo(mWaveWidth * i + offset + mWaveWidth / 4, mCurrentWaveY - mWaveHeight, mWaveWidth * i + offset + mWaveWidth / 2, mCurrentWaveY);
+    path.quadTo(mWaveWidth * i + offset + mWaveWidth * 3 / 4, mCurrentWaveY + mWaveHeight, mWaveWidth * i + offset + mWaveWidth, mCurrentWaveY);
+}
+path.lineTo(mViewWidth, mViewHeight);
+path.lineTo(0,mViewHeight);
+path.close();
+canvas.drawPath(path, mWavePaint);
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/2171639-64dbb2ca9b6e39b8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="波形图"><br>我就是按照上图的波形来绘制贝塞尔曲线的，上面代码中的mCurrentWaveY代表波浪中线(相当于上图中的x轴)的y轴坐标；首先设置绘制贝塞尔曲线的起始点为上图中与x轴最左边的交点；然后通过for循环绘制mWaveNumber个波长的贝塞尔曲线，每个波长的贝塞尔曲线有两条二阶贝塞尔曲线组成，第一条代表一个波长的上半部分，第二条代表一个波长的下半部分；绘制完贝塞尔曲线后就是依次连接View的右下角坐标和左下角坐标，从而完成绿色波浪的绘制。</p>
+</li>
+<li><p>利用PorterDuff.Mode.DST_ATOP(取上层非交集部分与下层交集部分)将背景图片绘制在绿色波浪上面，从而可以得到任意形状的波浪；接着再把描述进度的文字绘制上去：</p>
+<pre><code>Paint paint = new Paint();
+paint.setAntiAlias(true);
+paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP));
+canvas.drawBitmap(Bitmap.createScaledBitmap(mBackGroundBmp, mViewWidth, mViewHeight, false), 0, 0, paint);
+canvas.drawText(mCurrentProgress + mProgressUnit, mViewWidth / 2,
+        mViewHeight / 2 - (mTextPaint.getFontMetricsInt().ascent + mTextPaint.getFontMetricsInt().descent) / 2, mTextPaint);
+</code></pre><p>上面代码中最后面利用drawText居中绘制字符串，关于如何居中绘制字符串请参考我的另一篇博客：<br><a href="http://www.jianshu.com/p/b3305a082034" target="_blank" rel="external">在Canvas中居中显示文字</a></p>
+</li>
+<li><p>绘制波浪的完整代码如下：</p>
+<pre><code>@Override
+protected void onDraw(Canvas canvas) {
+    //super.onDraw(canvas);
+    canvas.drawBitmap(createImage(), 0, 0, null);
+}
+private float mCurrentWaveY;
+private int mWaveNumber;
+private Bitmap createImage()
+{
+    Bitmap finalBmp = Bitmap.createBitmap(mViewWidth, mViewHeight, Bitmap.Config.ARGB_8888);
+    Canvas canvas = new Canvas(finalBmp);
+    Path path = new Path();
+    path.moveTo(offset, mCurrentWaveY);
+    for (int i = 0; i &lt; mWaveNumber; i++) {
+        path.quadTo(mWaveWidth * i + offset + mWaveWidth / 4, mCurrentWaveY - mWaveHeight, mWaveWidth * i + offset + mWaveWidth / 2, mCurrentWaveY);
+        path.quadTo(mWaveWidth * i + offset + mWaveWidth * 3 / 4, mCurrentWaveY + mWaveHeight, mWaveWidth * i + offset + mWaveWidth, mCurrentWaveY);
+    }
+    path.lineTo(mViewWidth, mViewHeight);
+    path.lineTo(0,mViewHeight);
+    path.close();
+    canvas.drawPath(path, mWavePaint);
+
+    Paint paint = new Paint();
+    paint.setAntiAlias(true);
+    paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP));
+    canvas.drawBitmap(Bitmap.createScaledBitmap(mBackGroundBmp, mViewWidth, mViewHeight, false), 0, 0, paint);
+
+    canvas.drawText(mCurrentProgress + mProgressUnit, mViewWidth / 2,
+            mViewHeight / 2 - (mTextPaint.getFontMetricsInt().ascent + mTextPaint.getFontMetricsInt().descent) / 2, mTextPaint);
+
+    return finalBmp;
+}
+</code></pre></li>
+<li><p>让波浪波动起来</p>
+<pre><code>private Handler mHandler = new Handler() {
+    @Override
+    public void handleMessage(Message msg) {
+        super.handleMessage(msg);
+        waveMoveToNext();
+        invalidate();
+        mHandler.sendEmptyMessageDelayed(0, mFluctuationSpeed.getValue());
+    }
+};
+private void waveMoveToNext() {
+    offset += steps;
+    if (offset &lt; -mWaveWidth) {
+        offset += mWaveWidth;
+    } else if (offset &gt; 0) {
+        offset -= mWaveWidth;
+    }
+
+    if (refreshRate &gt; 0) {
+        mCurrentWaveY -= (1.0f / mMaxProgress) * mViewHeight / 5;
+        refreshRate--;
+    } else {
+        mCurrentProgress ++;
+        if (mCurrentProgress &gt; 100) {
+            mCurrentProgress = 0;
+            mCurrentWaveY = mViewHeight;
+        }
+        refreshRate = 5;
+    }
+}
+</code></pre><p>在构造方法中发送一个消息给Hander即可实现波动，另外为了每次波浪上升的时候不产生卡顿效果，把这1/mMaxProgress的上升分为5次来绘制。</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/14/自定义任意形状的水波纹加载View/" data-id="cir0ixzjs0005ncjd1zoj13c2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-在Canvas中居中显示文字" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/12/在Canvas中居中显示文字/" class="article-date">
+  <time datetime="2016-07-12T10:38:18.000Z" itemprop="datePublished">2016-07-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/12/在Canvas中居中显示文字/">在Canvas中居中显示文字</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们在自定义View中有的时候会想自己绘制文字，自己绘制文字的时候，我们通常希望把文字精确定位，文字居中（水平、垂直）是普遍的需求，所以这里就以文字居中为例。Android是通过Canvas中的drawText方法进行文字绘制的，方法使用说明如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public void drawText(@NonNull String text, int start, int end, float x, float y, @NonNull Paint paint) &#123;</div><div class="line">text：要绘制的字符串</div><div class="line">start：第一个要绘制字符的下标值</div><div class="line">end：最后一个要绘制字符的下标值</div><div class="line">x默认是字符串的左边在屏幕的位置，如果设置了paint.setTextAlign(Paint.Align.CENTER);那就是字符串的中心对应的x坐标，y是指定字符串baseline在屏幕上的位置。</div></pre></td></tr></table></figure></p>
+<p>Canvas绘制文本时，通过Paint对象获取FontMetrics对象，然后利用FontMetrics对象计算baseline在屏幕上的位置。 它的思路和java.awt.FontMetrics的基本相同。 FontMetrics对象它以四个基本坐标为基准，如下图所示：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2171639-d83c9ccd6d7a57ea.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="基准线视图"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">FontMetrics.top       该距离是从所绘字符的baseline之上至可绘制区域的最高点。</div><div class="line">FontMetrics.ascent    该距离是从所绘字符的baseline之上至该字符所绘制的最高点。这个距离是系统推荐。</div><div class="line">FontMetrics.descent   该距离是从所绘字符的baseline之下至该字符所绘制的最低点。这个距离是系统推荐的。</div><div class="line">FontMetrics.bottom    该距离是从所绘字符的baseline之下至可绘制区域的最低点。</div></pre></td></tr></table></figure>
+<p>由上图可以知道字符串的绘制区域在FontMetrics.ascent和FontMetrics.descent之间，因此让字符串垂直居中显示就相当于让字符串的绘制区域垂直居中显示；由于drawText方法中y参数所需要的值就是图中的红线（baseline）对应的y值，因此只要计算出字符串的绘制区域垂直居中显示时红线（baseline）对应的y值即可，计算过程如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">假设我们所求的baseline的值为baseY;</div><div class="line">text的descent距离：</div><div class="line">①descentY = baseY + fontMetrics.descent; </div><div class="line">text的字体高度：</div><div class="line">②fontHeight = fontMetrics.descent- fontMetrics.ascent </div><div class="line">因为我们要让text垂直居中，所以此时text的bottom距离应该为：</div><div class="line">③descentY=1/2 * height + 1/2 * fontHeight</div><div class="line">所以由上述①②③公式就可以推得：</div><div class="line">baseY = 1/2 * height － 1/2 * (fontMetrics.ascent ＋ fontMetrics.descent） </div><div class="line">此时求得baseline的值，即cavans.drawText()里的y的坐标。</div></pre></td></tr></table></figure></p>
+<p>获取fontMetrics的方法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mFontMetricsInt = mPaint.getFontMetricsInt();</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/12/在Canvas中居中显示文字/" data-id="cir0ixzjo0003ncjd0rqbpwi6" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-一个电脑对应两个Github帐户" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/07/10/一个电脑对应两个Github帐户/" class="article-date">
@@ -109,7 +341,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/10/一个电脑对应两个Github帐户/" data-id="ciqgj3ld500024njftldyu301" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/07/10/一个电脑对应两个Github帐户/" data-id="cir0ixzjn0002ncjdah310wmq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -176,7 +408,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/08/自定义LED点阵屏View/" data-id="ciqgj3ld700034njfy9w439hd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/07/08/自定义LED点阵屏View/" data-id="cir0ixzjq0004ncjdto4s1bi3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -250,7 +482,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/06/自定义实现不规则形状的View/" data-id="ciqgj3ld800044njfg87ki12t" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/07/06/自定义实现不规则形状的View/" data-id="cir0ixzk30006ncjd7y9bb8b9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -295,7 +527,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/01/hello-world/" data-id="ciqgj3ld200014njfzf7wv5g1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/07/01/hello-world/" data-id="cir0ixzjk0001ncjdpd6sewny" class="article-share-link">Share</a>
       
       
     </footer>
@@ -380,7 +612,7 @@ $ git push origin source
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/01/Hexo-Github静态博客搭建/" data-id="ciqgj3lcx00004njft1231lhk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/07/01/Hexo-Github静态博客搭建/" data-id="cir0ixzjg0000ncjdituoe9ez" class="article-share-link">Share</a>
       
       
     </footer>
@@ -420,6 +652,14 @@ $ git push origin source
       <ul>
         
           <li>
+            <a href="/2016/07/14/自定义任意形状的水波纹加载View/">自定义任意形状的水波纹加载View</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/12/在Canvas中居中显示文字/">在Canvas中居中显示文字</a>
+          </li>
+        
+          <li>
             <a href="/2016/07/10/一个电脑对应两个Github帐户/">一个电脑对应两个Github帐户</a>
           </li>
         
@@ -429,14 +669,6 @@ $ git push origin source
         
           <li>
             <a href="/2016/07/06/自定义实现不规则形状的View/">自定义实现不规则形状的View</a>
-          </li>
-        
-          <li>
-            <a href="/2016/07/01/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2016/07/01/Hexo-Github静态博客搭建/">Hexo-Github静态博客搭建</a>
           </li>
         
       </ul>

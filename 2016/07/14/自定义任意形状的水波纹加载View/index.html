@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>自定义任意形状的水波纹加载View | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="概述对于一些耗时操作，例如加载大文件，如果不给用户一个动态加载的友好提示界面，就会让用户感觉应用卡死了，所以今天就来实现一个动态加载的自定义View(WaveProgressView)，先看一下实现后的效果图：
+实现代码详解
+通过自定义属性设置水波颜色、波长、振幅、波的颜色、字体大小、字体颜色、进度条最大值、当前进度值、波动的快慢和波动的方向，也可以通过set方法来实现。自定义属性：
+&amp;lt;de">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义任意形状的水波纹加载View">
+<meta property="og:url" content="http://yoursite.com/2016/07/14/自定义任意形状的水波纹加载View/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="概述对于一些耗时操作，例如加载大文件，如果不给用户一个动态加载的友好提示界面，就会让用户感觉应用卡死了，所以今天就来实现一个动态加载的自定义View(WaveProgressView)，先看一下实现后的效果图：
+实现代码详解
+通过自定义属性设置水波颜色、波长、振幅、波的颜色、字体大小、字体颜色、进度条最大值、当前进度值、波动的快慢和波动的方向，也可以通过set方法来实现。自定义属性：
+&amp;lt;de">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2171639-0edbab323a3e0bc8.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2171639-64dbb2ca9b6e39b8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-07-22T13:28:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义任意形状的水波纹加载View">
+<meta name="twitter:description" content="概述对于一些耗时操作，例如加载大文件，如果不给用户一个动态加载的友好提示界面，就会让用户感觉应用卡死了，所以今天就来实现一个动态加载的自定义View(WaveProgressView)，先看一下实现后的效果图：
+实现代码详解
+通过自定义属性设置水波颜色、波长、振幅、波的颜色、字体大小、字体颜色、进度条最大值、当前进度值、波动的快慢和波动的方向，也可以通过set方法来实现。自定义属性：
+&amp;lt;de">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2171639-0edbab323a3e0bc8.gif?imageMogr2/auto-orient/strip">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-自定义任意形状的水波纹加载View" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/14/自定义任意形状的水波纹加载View/" class="article-date">
+  <time datetime="2016-07-14T03:37:50.000Z" itemprop="datePublished">2016-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      自定义任意形状的水波纹加载View
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>对于一些耗时操作，例如加载大文件，如果不给用户一个动态加载的友好提示界面，就会让用户感觉应用卡死了，所以今天就来实现一个动态加载的自定义View(WaveProgressView)，先看一下实现后的效果图：<br><img src="http://upload-images.jianshu.io/upload_images/2171639-0edbab323a3e0bc8.gif?imageMogr2/auto-orient/strip" alt="最后效果图"></p>
+<h1 id="实现代码详解"><a href="#实现代码详解" class="headerlink" title="实现代码详解"></a>实现代码详解</h1><ol>
+<li><p>通过自定义属性设置水波颜色、波长、振幅、波的颜色、字体大小、字体颜色、进度条最大值、当前进度值、波动的快慢和波动的方向，也可以通过set方法来实现。<br>自定义属性：</p>
+<pre><code>&lt;declare-styleable name=&quot;WaveProgressView&quot;&gt;
+    &lt;attr name=&quot;wpv_max_progress&quot; format=&quot;integer&quot; /&gt;
+    &lt;attr name=&quot;wpv_current_progress&quot; format=&quot;integer&quot; /&gt;
+    &lt;attr name=&quot;wpv_progress_unit&quot; format=&quot;reference|string&quot; /&gt;
+    &lt;attr name=&quot;wpv_text_color&quot; format=&quot;reference|color&quot; /&gt;
+    &lt;attr name=&quot;wpv_text_size&quot; format=&quot;reference|dimension&quot; /&gt;
+    &lt;attr name=&quot;wpv_wave_color&quot; format=&quot;reference|color&quot; /&gt;
+    &lt;attr name=&quot;wpv_wave_width&quot; format=&quot;reference|dimension&quot; /&gt;
+    &lt;attr name=&quot;wpv_wave_height&quot; format=&quot;reference|dimension&quot; /&gt;
+    &lt;attr name=&quot;wpv_fluctuation_speed&quot; &gt;
+        &lt;enum name=&quot;slow&quot; value=&quot;300&quot; /&gt;
+        &lt;enum name=&quot;normal&quot; value=&quot;200&quot; /&gt;
+        &lt;enum name=&quot;fast&quot; value=&quot;100&quot; /&gt;
+    &lt;/attr&gt;
+    &lt;attr name=&quot;wpv_fluctuation_direction&quot; &gt;
+        &lt;enum name=&quot;left&quot; value=&quot;0&quot; /&gt;
+        &lt;enum name=&quot;right&quot; value=&quot;1&quot; /&gt;
+    &lt;/attr&gt;
+&lt;/declare-styleable&gt;
+</code></pre><p>set方法：</p>
+<pre><code>public void setMaxProgress(int maxProgress) {
+    this.mMaxProgress = maxProgress;
+}
+
+public void setmCurrentProgress(int currentProgress) {
+    this.mCurrentProgress = currentProgress;
+}
+
+public void setProgressUnit(String progressUnit) {
+    this.mProgressUnit = progressUnit;
+}
+
+public void setWaveColor(int waveColor) {
+    this.mWaveColor = waveColor;
+}
+
+public void setTextColor(int textColor) {
+    this.mTextColor = textColor;
+}
+</code></pre></li>
+<li><p>获取背景图片然后将背景置为null</p>
+<pre><code>if (null != getBackground()) {
+    mBackGroundBmp = getBitmapFromDrawable(getBackground());
+    setBackgroundDrawable(null);
+} else {
+    throw new IllegalArgumentException(String.format(&quot;background is null.&quot;));
+}
+</code></pre><p>上面的代码中再获取背景图片后不设置背景为null，会导致背景重复带来的圆角矩形背景圆角处没有被波浪填满的现象。就可以利用PorterDuff.Mode.DST_ATOP（取上层非交集部分与下层交集部分）在后面会将背景图片和绘制的波浪重叠在一起</p>
+</li>
+<li><p>利用二阶贝塞尔曲线绘制波浪<br>关于贝塞尔曲线可以参考<a href="http://www.html-js.com/article/1628" target="_blank" rel="external">贝塞尔曲线扫盲</a><br>1&gt; 首先算出在指定宽度的View中实现波动效果最少要绘制几个波长的贝塞尔曲线：</p>
+<pre><code>mWaveNumber = (int) (mViewWidth / mWaveWidth + 2);
+</code></pre><p>假如View的宽度是波长的2.2倍，那么在指定宽度的View中绘制一个波动的波浪最少需要绘制3.2个波长的贝塞尔曲线，为了方便我就绘制4个波长的贝塞尔曲线，也就是上面代码中加2的原因。<br>2&gt; 根据波浪波动的方向得到绘制贝塞尔曲线的起始点x坐标，如果波浪向左移动的话，那么绘制贝塞尔曲线的起始点x坐标就是VIew左上角x坐标，如果波浪向右移动的话，那么绘制贝塞尔曲线的起始点x坐标就是VIew左上角向左移动一个波长距离后得到的点x坐标。</p>
+<pre><code>switch (mFluctuationDirection) {
+    case LEFT:
+        offset = 0;
+        steps = -TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics());
+        break;
+    case RIGHT:
+        offset = -mWaveWidth;
+        steps = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics());;
+        break;
+}
+</code></pre><p>上面代码中就是对offset初始化（即绘制贝塞尔曲线的起始点x坐标） ，steps 是每一次在水平方向移动的距离。<br>3&gt; 利用Path绘制效果图中的绿色波浪</p>
+<pre><code>Path path = new Path();
+path.moveTo(offset, mCurrentWaveY);
+for (int i = 0; i &lt; mWaveNumber; i++) {
+    path.quadTo(mWaveWidth * i + offset + mWaveWidth / 4, mCurrentWaveY - mWaveHeight, mWaveWidth * i + offset + mWaveWidth / 2, mCurrentWaveY);
+    path.quadTo(mWaveWidth * i + offset + mWaveWidth * 3 / 4, mCurrentWaveY + mWaveHeight, mWaveWidth * i + offset + mWaveWidth, mCurrentWaveY);
+}
+path.lineTo(mViewWidth, mViewHeight);
+path.lineTo(0,mViewHeight);
+path.close();
+canvas.drawPath(path, mWavePaint);
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/2171639-64dbb2ca9b6e39b8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="波形图"><br>我就是按照上图的波形来绘制贝塞尔曲线的，上面代码中的mCurrentWaveY代表波浪中线(相当于上图中的x轴)的y轴坐标；首先设置绘制贝塞尔曲线的起始点为上图中与x轴最左边的交点；然后通过for循环绘制mWaveNumber个波长的贝塞尔曲线，每个波长的贝塞尔曲线有两条二阶贝塞尔曲线组成，第一条代表一个波长的上半部分，第二条代表一个波长的下半部分；绘制完贝塞尔曲线后就是依次连接View的右下角坐标和左下角坐标，从而完成绿色波浪的绘制。</p>
+</li>
+<li><p>利用PorterDuff.Mode.DST_ATOP(取上层非交集部分与下层交集部分)将背景图片绘制在绿色波浪上面，从而可以得到任意形状的波浪；接着再把描述进度的文字绘制上去：</p>
+<pre><code>Paint paint = new Paint();
+paint.setAntiAlias(true);
+paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP));
+canvas.drawBitmap(Bitmap.createScaledBitmap(mBackGroundBmp, mViewWidth, mViewHeight, false), 0, 0, paint);
+canvas.drawText(mCurrentProgress + mProgressUnit, mViewWidth / 2,
+        mViewHeight / 2 - (mTextPaint.getFontMetricsInt().ascent + mTextPaint.getFontMetricsInt().descent) / 2, mTextPaint);
+</code></pre><p>上面代码中最后面利用drawText居中绘制字符串，关于如何居中绘制字符串请参考我的另一篇博客：<br><a href="http://www.jianshu.com/p/b3305a082034" target="_blank" rel="external">在Canvas中居中显示文字</a></p>
+</li>
+<li><p>绘制波浪的完整代码如下：</p>
+<pre><code>@Override
+protected void onDraw(Canvas canvas) {
+    //super.onDraw(canvas);
+    canvas.drawBitmap(createImage(), 0, 0, null);
+}
+private float mCurrentWaveY;
+private int mWaveNumber;
+private Bitmap createImage()
+{
+    Bitmap finalBmp = Bitmap.createBitmap(mViewWidth, mViewHeight, Bitmap.Config.ARGB_8888);
+    Canvas canvas = new Canvas(finalBmp);
+    Path path = new Path();
+    path.moveTo(offset, mCurrentWaveY);
+    for (int i = 0; i &lt; mWaveNumber; i++) {
+        path.quadTo(mWaveWidth * i + offset + mWaveWidth / 4, mCurrentWaveY - mWaveHeight, mWaveWidth * i + offset + mWaveWidth / 2, mCurrentWaveY);
+        path.quadTo(mWaveWidth * i + offset + mWaveWidth * 3 / 4, mCurrentWaveY + mWaveHeight, mWaveWidth * i + offset + mWaveWidth, mCurrentWaveY);
+    }
+    path.lineTo(mViewWidth, mViewHeight);
+    path.lineTo(0,mViewHeight);
+    path.close();
+    canvas.drawPath(path, mWavePaint);
+
+    Paint paint = new Paint();
+    paint.setAntiAlias(true);
+    paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP));
+    canvas.drawBitmap(Bitmap.createScaledBitmap(mBackGroundBmp, mViewWidth, mViewHeight, false), 0, 0, paint);
+
+    canvas.drawText(mCurrentProgress + mProgressUnit, mViewWidth / 2,
+            mViewHeight / 2 - (mTextPaint.getFontMetricsInt().ascent + mTextPaint.getFontMetricsInt().descent) / 2, mTextPaint);
+
+    return finalBmp;
+}
+</code></pre></li>
+<li><p>让波浪波动起来</p>
+<pre><code>private Handler mHandler = new Handler() {
+    @Override
+    public void handleMessage(Message msg) {
+        super.handleMessage(msg);
+        waveMoveToNext();
+        invalidate();
+        mHandler.sendEmptyMessageDelayed(0, mFluctuationSpeed.getValue());
+    }
+};
+private void waveMoveToNext() {
+    offset += steps;
+    if (offset &lt; -mWaveWidth) {
+        offset += mWaveWidth;
+    } else if (offset &gt; 0) {
+        offset -= mWaveWidth;
+    }
+
+    if (refreshRate &gt; 0) {
+        mCurrentWaveY -= (1.0f / mMaxProgress) * mViewHeight / 5;
+        refreshRate--;
+    } else {
+        mCurrentProgress ++;
+        if (mCurrentProgress &gt; 100) {
+            mCurrentProgress = 0;
+            mCurrentWaveY = mViewHeight;
+        }
+        refreshRate = 5;
+    }
+}
+</code></pre><p>在构造方法中发送一个消息给Hander即可实现波动，另外为了每次波浪上升的时候不产生卡顿效果，把这1/mMaxProgress的上升分为5次来绘制。</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/14/自定义任意形状的水波纹加载View/" data-id="cir0ixzjs0005ncjd1zoj13c2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/07/12/在Canvas中居中显示文字/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">在Canvas中居中显示文字</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/07/14/自定义任意形状的水波纹加载View/">自定义任意形状的水波纹加载View</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/12/在Canvas中居中显示文字/">在Canvas中居中显示文字</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/10/一个电脑对应两个Github帐户/">一个电脑对应两个Github帐户</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/08/自定义LED点阵屏View/">自定义LED点阵屏View</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/06/自定义实现不规则形状的View/">自定义实现不规则形状的View</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
